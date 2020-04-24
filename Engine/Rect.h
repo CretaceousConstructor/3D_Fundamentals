@@ -104,3 +104,4 @@ public:
 
 typedef _Rect< int > RectI;
 typedef _Rect< float > RectF;
+

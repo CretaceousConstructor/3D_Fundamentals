@@ -22,20 +22,14 @@
 #include "Game.h"
 #include "Mat2.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd )
+	wnd(wnd),
+	gfx(wnd),
+	link("D:\\CS\\ChiliEngine\\Bmp\\images.bmp", 4, 5, {200.f,200.f}),
+	house("D:\\CS\\ChiliEngine\\Bmp\\house.bmp", 1, 1, {200.f,200.f}),
+	Grass("D:\\CS\\ChiliEngine\\Bmp\\grass.bmp", 1, 1, { 0.f,0.f })
 {
-	const float dTheta = 2.0f * PI / float( nflares * 2 );
-	for( int i = 0; i < nflares * 2; i++ )
-	{
-		const float rad = (i % 2 == 0) ? radOuter : radInner;
-		star.emplace_back(
-			rad * cos( float( i ) * dTheta ),
-			rad * sin( float( i ) * dTheta )
-		);
-	}
 }
 
 void Game::Go()
@@ -48,25 +42,28 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if( !wnd.kbd.KeyIsPressed( VK_SPACE ) )
-	{
-		theta += vRot;
+	const float dt = clock.Mark();
+	link.update(dt);
+	if (wnd.kbd.KeyIsPressed(VK_UP)) {
+		link.MoveU(dt);
+	}
+	if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
+		link.MoveD(dt);
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
+		link.MoveL(dt);
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
+		link.MoveR(dt);
 	}
 }
 
 void Game::ComposeFrame()
 {
-	const Vec2 trl = { float( gfx.ScreenWidth ) / 2.0f,float( gfx.ScreenHeight ) / 2.0f };
-	const Mat2 trf = Mat2::Rotation( theta ) * Mat2::Scaling( size );
-	auto vtx( star );
-	for( auto& v : vtx )
-	{
-		v *= trf;
-		v += trl;
-	}
-	for( auto i = vtx.cbegin(),end = std::prev( vtx.cend() ); i != end; i++ )
-	{
-		gfx.DrawLine( *i,*std::next( i ),Colors::White );
-	}
-	gfx.DrawLine( vtx.front(),vtx.back(),Colors::White );
+
+
+
+	Grass.GetDraw(gfx);
+	link.GetDraw(gfx,0.6f);
+	house.GetDraw(gfx, 0.3f);
 }
