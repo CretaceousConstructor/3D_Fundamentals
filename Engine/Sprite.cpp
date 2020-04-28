@@ -223,9 +223,9 @@ void Sprite::GetDraw(Graphics& GFX, rect rec, Vec2 p)
 
 
 
-		for (size_t i = startOfYinScreen; i < endOfYinScreen; i++)
+		for (int i = startOfYinScreen; i < endOfYinScreen; i++)
 		{
-			for (size_t j = startOfXinScreen; j < endOfXinScreen; j++)
+			for (int j = startOfXinScreen; j < endOfXinScreen; j++)
 			{
 				Color c = bitMap[(startOfYinSurface + (i - startOfYinScreen)) * width + startOfXinSurface + (j - startOfXinScreen)];
 				//* width of the WHOLE BMP
@@ -291,3 +291,37 @@ void Sprite::GetDraw(Graphics& GFX, rect rec, Vec2 p, float scaleFactor)
 
 
 
+void Sprite::GetDrawWithoutClipping(Graphics& GFX, rect rec, Vec2 p, float scaleFactor)
+{
+
+	int heightOfRect = rec.bottom - rec.top;
+	int widthOfRect = rec.right - rec.left;
+
+	for (int i = rec.top; i < rec.bottom; i++) {
+		for (int j = rec.left; j < rec.right; j++) {
+			Color c = bitMap[i * width + j];
+			if (c == Colors::Magenta) {
+				continue;
+			}
+
+			int xOffSetFromOrigin = (j - rec.left);
+			int yOffSetFromOrigin = (i - rec.top);
+			Vec2 position = { (float)xOffSetFromOrigin ,(float)yOffSetFromOrigin };
+
+			Mat2 transmationMatrix = Mat2::Rotation(1.f);
+
+
+			//Mat2 transmationMatrix =  Mat2::Identity() * scaleFactor;
+
+
+
+			position = position * transmationMatrix;
+			position += p;
+			GFX.PutPixel((int)(position.x), (int)(position.y), c);
+
+		}
+	}
+
+
+
+}

@@ -83,6 +83,11 @@ public:
 		_Mat2 s = { factor,(T)0.0,(T)0.0,factor };
 		return s;
 	}
+	static _Mat2 ShearHorizontal(T shear)
+	{
+		_Mat2 s = { (T)1. ,(T)0.0,shear,(T)1. };
+		return s;
+	}
 public:
 	// [ row ][ col ]
 	T elements[2][2];

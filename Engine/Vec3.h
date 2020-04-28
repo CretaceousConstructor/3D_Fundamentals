@@ -83,6 +83,8 @@ public:
 	{
 		return _Vec3(*this) -= rhs;
 	}
+
+
 	_Vec3& operator*=(const T& rhs)
 	{
 		x *= rhs;
@@ -94,6 +96,9 @@ public:
 	{
 		return _Vec3(*this) *= rhs;
 	}
+	
+	
+	
 	_Vec3& operator/=(const T& rhs)
 	{
 		x /= rhs;

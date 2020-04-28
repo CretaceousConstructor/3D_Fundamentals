@@ -28,7 +28,10 @@
 #include "Triangle.h"
 #include "Character.h"
 #include "Timer.h"
-
+#include "NDCScreenTransformer.h"
+#include "Cubnoid.h"
+#include "Mat4.h"
+#include "Camera.h"
 
 class Game
 {
@@ -48,26 +51,16 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-
-	Character link;
-	Character house;
-	Character Grass;
-
-
 	Timer clock;
-	
+	NDCScreenTransformer NSTmer;
+	Triangle trWorld;
+	Triangle trView;
+	Triangle trNDC;
 
 
-	static constexpr float vRot = PI / 60.0f;
-	static constexpr float radInner = 1.0f;
-	static constexpr float radOuter = 2.0f;
-	static constexpr int nflares = 5;
-	static constexpr float size = 100.0f;
-	static constexpr float focalLength = 10.f;
-	
-	
-
-
+	Triangle trCubnoid;
+	Camera camera;
+	Cubnoid cube;
 	/********************************/
 };
 

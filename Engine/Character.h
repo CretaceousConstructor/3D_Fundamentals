@@ -13,6 +13,7 @@ public:
 	void update(float dt);
 	void GetDraw(Graphics& GFX);
 	void GetDraw(Graphics& GFX, float scaleFactor);
+
 	void MoveU(float dt);
 	void MoveD(float dt);
 	void MoveL(float dt);

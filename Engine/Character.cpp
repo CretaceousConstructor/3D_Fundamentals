@@ -58,9 +58,11 @@ void Character::GetDraw(Graphics& GFX)
 void Character::GetDraw(Graphics& GFX, float scaleFactor)
 {
 
-	sp.GetDraw(GFX, *itr, position,scaleFactor);
+	sp.GetDrawWithoutClipping(GFX, *itr, position, scaleFactor);
 
 }
+
+
 
 void Character::MoveU(float dt)
 {

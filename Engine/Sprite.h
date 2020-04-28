@@ -20,6 +20,7 @@ public:
 
 	void GetDraw(Graphics& GFX,rect rec,Vec2 p);
 	void GetDraw(Graphics& GFX, rect rec, Vec2 p, float scaleFactor);
+	void Sprite::GetDrawWithoutClipping(Graphics& GFX, rect rec, Vec2 p, float scaleFactor);
 
 	inline int GetWidth() {
 		return width;

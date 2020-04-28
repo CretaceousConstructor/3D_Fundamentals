@@ -26,9 +26,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	link("D:\\CS\\ChiliEngine\\Bmp\\images.bmp", 4, 5, {200.f,200.f}),
-	house("D:\\CS\\ChiliEngine\\Bmp\\house.bmp", 1, 1, {200.f,200.f}),
-	Grass("D:\\CS\\ChiliEngine\\Bmp\\grass.bmp", 1, 1, { 0.f,0.f })
+	trWorld({0.f,0.5 ,-20.f}, {-0.5f,0.f,-20.f}, {0.5f,0.f,-20.f}),
+	camera({ 0.f,0.f,0.f }, { 0.f,0.f,-1.f }, { 0.f,1.f,0.f })
 {
 }
 
@@ -43,27 +42,69 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	const float dt = clock.Mark();
-	link.update(dt);
+
+	if (wnd.kbd.KeyIsPressed('F')) {
+		camera.moveu();
+	}
+	if (wnd.kbd.KeyIsPressed('G')) {
+		camera.moved();
+	}
+
+	if (wnd.kbd.KeyIsPressed('A')) {
+		camera.movel();
+	}
+	if (wnd.kbd.KeyIsPressed('D')) {
+		camera.mover();
+	}
+	if (wnd.kbd.KeyIsPressed('W')) {
+		camera.movef();
+	}
+	if (wnd.kbd.KeyIsPressed('S')) {
+		camera.moveb();
+	}
+
+
 	if (wnd.kbd.KeyIsPressed(VK_UP)) {
-		link.MoveU(dt);
+		camera.RotateHorizontally();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
-		link.MoveD(dt);
+		camera.RotateVertically();
 	}
-	if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
-		link.MoveL(dt);
-	}
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
-		link.MoveR(dt);
-	}
+
+
+
+	//worldspace to viewspace
+	trView.points[0] = camera.cameraTransformation * trWorld.points[0];
+	trView.points[1] = camera.cameraTransformation * trWorld.points[1];
+	trView.points[2] = camera.cameraTransformation * trWorld.points[2];
+
+
+
+	//spectrum to cubnoid
+	trCubnoid.points[0] = camera.perspectiveProjection * trView.points[0];
+	trCubnoid.points[1] = camera.perspectiveProjection * trView.points[1];
+	trCubnoid.points[2] = camera.perspectiveProjection * trView.points[2];
+
+	//recover x , y cordinates
+	trCubnoid.points[0] = (Mat4::Identity() * (1.f / trCubnoid.points[0].w)) * trCubnoid.points[0];
+	trCubnoid.points[1] = (Mat4::Identity() * (1.f / trCubnoid.points[1].w)) * trCubnoid.points[1];
+	trCubnoid.points[2] = (Mat4::Identity() * (1.f / trCubnoid.points[2].w)) * trCubnoid.points[2];
+
+	//cubnoid to NDC
+	trNDC.points[0] = camera.orthographicPro * trCubnoid.points[0];
+	trNDC.points[1] = camera.orthographicPro * trCubnoid.points[1];
+	trNDC.points[2] = camera.orthographicPro * trCubnoid.points[2];
+
+	//NDC to Screen
+	NSTmer.Transform(trNDC.points[0]);
+	NSTmer.Transform(trNDC.points[1]); 
+	NSTmer.Transform(trNDC.points[2]);
+
 }
 
 void Game::ComposeFrame()
 {
+	
+	trNDC.GetDraw(gfx);
 
-
-
-	Grass.GetDraw(gfx);
-	link.GetDraw(gfx,0.6f);
-	house.GetDraw(gfx, 0.3f);
 }
