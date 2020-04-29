@@ -39,6 +39,7 @@ public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
+	//~Game() = default;
 	void Go();
 private:
 	void ComposeFrame();

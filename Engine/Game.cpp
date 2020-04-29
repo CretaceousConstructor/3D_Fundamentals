@@ -95,7 +95,7 @@ void Game::UpdateModel()
 	trNDC.points[1] = camera.orthographicPro * trCubnoid.points[1];
 	trNDC.points[2] = camera.orthographicPro * trCubnoid.points[2];
 
-	//NDC to Screen
+	//NDC to Screenspace
 	NSTmer.Transform(trNDC.points[0]);
 	NSTmer.Transform(trNDC.points[1]); 
 	NSTmer.Transform(trNDC.points[2]);
@@ -105,6 +105,11 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	
-	trNDC.GetDraw(gfx);
+	//trNDC.GetDraw(gfx);
+
+	gfx.DrawTriangle({ trNDC.points[0].x, trNDC.points[0].y}, { trNDC.points[1].x, trNDC.points[1].y }, { trNDC.points[2].x, trNDC.points[2].y },Colors::Green);
+
+
+
 
 }

@@ -69,7 +69,15 @@ public:
 	{
 		sysBuffer.PutPixel( x,y,c );
 	}
+
+
+	void DrawTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2,Color c);
+
+	//ALL STATRT from top vertex
 	~Graphics();
+private:
+	void DrawFlatTopTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c);//draw in clockwise order 
+	void DrawFlatBottomTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c);//draw in counterclockwise order 
 private:
 	GDIPlusManager										gdipMan;
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;

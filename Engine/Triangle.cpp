@@ -46,11 +46,48 @@ void Triangle::GetDraw(Graphics& GFX, float focalLength)
 	//GFX.DrawLine(points[2], points[0], Colors::Magenta);
 	//
 }
+
+
 void Triangle::GetDraw(Graphics& GFX)
 {
-
-
-	GFX.DrawLine({ points[0].x ,points[0].y},  { points[1].x ,points[1].y }, Colors::Magenta);
+	GFX.DrawLine({ points[0].x ,points[0].y }, { points[1].x ,points[1].y }, Colors::Magenta);
 	GFX.DrawLine({ points[1].x ,points[1].y }, { points[2].x ,points[2].y }, Colors::Magenta);
 	GFX.DrawLine({ points[2].x ,points[2].y }, { points[0].x ,points[0].y }, Colors::Magenta);
+}
+
+void Triangle::GetDraw(Graphics& GFX, int a)
+{
+
+	//Vec2 a = { points[0].x ,points[0].y };
+	//Vec2 b = { points[1].x ,points[1].y };
+	//Vec2 c = { points[2].x ,points[2].y };
+
+
+	//int minX = min(min(a.x, b.x), c.x);
+	//int maxX = max(max(a.x, b.x), c.x);
+
+	//int maxY = max(max(a.y, b.y), c.y);
+	//int minY = min(min(a.x, b.x), c.x);
+
+	//if (minX >= Graphics::ScreenWidth) return;
+	//if (maxX < 0) return;
+	//if (minY >= Graphics::ScreenHeight);
+	//if (maxY < 0) return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*GFX.DrawLine({ points[0].x ,points[0].y }, { points[1].x ,points[1].y }, Colors::Magenta);
+	GFX.DrawLine({ points[1].x ,points[1].y }, { points[2].x ,points[2].y }, Colors::Magenta);
+	GFX.DrawLine({ points[2].x ,points[2].y }, { points[0].x ,points[0].y }, Colors::Magenta);*/
 }
