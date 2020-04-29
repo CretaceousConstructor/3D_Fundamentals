@@ -65,14 +65,20 @@ void Camera::Update()
 	cameraTransformation = viewRotation * viewTranslation;
 }
 
-void Camera::RotateHorizontally()
+void Camera::RotateHorizontallyL()
 {
 	//lookAt rotate around lookUp
 	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt, rotateSpeed,lookUp);
 	Update();
 }
+void Camera::RotateHorizontallyR()
+{
+	//lookAt rotate around lookUp
+	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt, -rotateSpeed, lookUp);
+	Update();
+}
 
-void Camera::RotateVertically()
+void Camera::RotateVerticallyU()
 {
 	Vec4 axis = Vec4::dot(lookAt, lookUp);
 	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt, rotateSpeed, axis);
@@ -80,6 +86,15 @@ void Camera::RotateVertically()
 	Update();
 
 }
+void Camera::RotateVerticallyB()
+{
+	Vec4 axis = Vec4::dot(lookAt, lookUp);
+	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt,-rotateSpeed, axis);
+	lookUp = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookUp,-rotateSpeed, axis);
+	Update();
+
+}
+
 
 void Camera::moveu()
 {

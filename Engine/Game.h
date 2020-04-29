@@ -53,15 +53,25 @@ private:
 	/********************************/
 	/*  User Variables              */
 	Timer clock;
-	NDCScreenTransformer NSTmer;
-	Triangle trWorld;
-	Triangle trView;
-	Triangle trNDC;
+
+	Triangle trWorld0;
+	Triangle trWorld1;
+
+	Triangle trView0;
+	Triangle trView1;
+
+	
+	Triangle trNDC0;
+	Triangle trNDC1;
 
 
-	Triangle trCubnoid;
+	Triangle trCubnoid0;
+	Triangle trCubnoid1;
+
+
+
 	Camera camera;
-	Cubnoid cube;
+
 	/********************************/
 };
 

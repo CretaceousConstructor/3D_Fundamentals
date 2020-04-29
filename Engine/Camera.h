@@ -10,8 +10,10 @@ public:
 	Camera(Pointf4 wl, Vec4 lookAt,Vec4 lookUp);
 	Camera() = delete;
 	void Update();
-	void RotateHorizontally();
-	void RotateVertically();
+	void RotateHorizontallyL();
+	void RotateHorizontallyR();
+	void RotateVerticallyU();
+	void RotateVerticallyB();
 	void moveu();
 	void moved();
 	void movel();

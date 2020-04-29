@@ -1,15 +1,14 @@
 #pragma once
-#include "Graphics.h"
 
 #include "Point4.h"
 
 class NDCScreenTransformer
 {
 public:
-	NDCScreenTransformer() 
+	NDCScreenTransformer(int w, int h) 
 		:
-		xFactor( float(Graphics::ScreenWidth) / 2.f),
-		yFactor( float(Graphics::ScreenHeight) / 2.f)
+		xFactor( float(w) / 2.f),
+		yFactor( float(h) / 2.f)
 	{}
 	Pointf4& Transform(Pointf4& v) {
 		v.x = (v.x + 1.f) * xFactor;
@@ -21,8 +20,6 @@ public:
 		
 		return Transform(Pointf4(v));
 	}
-
-
 
 private:
 	float xFactor;

@@ -26,7 +26,12 @@
 #include "Surface.h"
 #include "Colors.h"
 #include "Vec2.h"
+#include "ChiliMath.h"
+#include <memory>
+#include "Zbuffer.h"
+#include "NDCScreenTransformer.h"
 
+#include "Vec4.h"
 #define CHILI_GFX_EXCEPTION( hr,note ) Graphics::Exception( hr,note,_CRT_WIDE(__FILE__),__LINE__ )
 
 class Graphics
@@ -72,12 +77,21 @@ public:
 
 
 	void DrawTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2,Color c);
+	void DrawTriangle( Pointf4& v0,  Pointf4& v1,  Pointf4& v2,Color c);
+
+
+
 
 	//ALL STATRT from top vertex
 	~Graphics();
 private:
 	void DrawFlatTopTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c);//draw in clockwise order 
 	void DrawFlatBottomTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c);//draw in counterclockwise order 
+
+
+
+	   void DrawFlatTopTriangle(const Pointf4& v0, const Pointf4& v1, const Pointf4& v2, Color c);//draw in clockwise order 
+	void DrawFlatBottomTriangle(const Pointf4& v0, const Pointf4& v1, const Pointf4& v2, Color c);//draw in counterclockwise order 
 private:
 	GDIPlusManager										gdipMan;
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
@@ -96,4 +110,7 @@ private:
 public:
 	static constexpr unsigned int ScreenWidth = 800u;
 	static constexpr unsigned int ScreenHeight = 600u;
+	Zbuffer pzBuffer = { (int)ScreenWidth, (int)ScreenHeight };
+	NDCScreenTransformer NSTmer  = { (int)ScreenWidth, (int)ScreenHeight };
+	
 };

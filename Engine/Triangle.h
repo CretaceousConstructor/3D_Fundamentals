@@ -18,11 +18,6 @@ public:
 	void Triangle::GetDraw(Graphics& GFX, int a);
 	void GetDraw(Graphics& GFX,float focalLength);
 	std::vector<Pointf4> points;
-	void DrawTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2,Color c);
-private:
-	//ALL STATRT from top vertex
-	void DrawFlatTopTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c);//draw in clockwise order 
-	void DrawFlatBottomTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c);//draw in counterclockwise order 
 
 
 };
