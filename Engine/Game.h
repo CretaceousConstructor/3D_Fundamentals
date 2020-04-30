@@ -69,9 +69,9 @@ private:
 	Triangle trCubnoid1;
 
 
-
+	bool draw = true;
 	Camera camera;
-
+	NDCScreenTransformer NSTmer = { (int)Graphics::ScreenWidth, (int)Graphics::ScreenHeight };
 	/********************************/
 };
 

@@ -10,11 +10,15 @@ Camera::Camera(Pointf4 wl, Vec4 la, Vec4 lu)
 {
 
 	//(cubnoid space)orthographicSpce -> (NDC space [-1,1]^3)
-	Mat4 ScaleMa = Mat4::Identity();
+	ScaleMa = Mat4::Identity();
 	ScaleMa.elements[0][0] = 2.f / (Spectrum::r - Spectrum::l);
 	ScaleMa.elements[1][1] = 2.f / (Spectrum::t - Spectrum::b);
 	ScaleMa.elements[2][2] = 2.f / (Spectrum::n - Spectrum::f);
-	orthographicPro = ScaleMa * Mat4::Translation((Spectrum::r + Spectrum::l) / -2.f, (Spectrum::t + Spectrum::b) / -2.f, (Spectrum::n + Spectrum::f) / -2.f);
+
+	TransMa = Mat4::Translation((Spectrum::r + Spectrum::l) / -2.f, (Spectrum::t + Spectrum::b) / -2.f, (Spectrum::n + Spectrum::f) / -2.f);
+
+
+	orthographicPro = ScaleMa * TransMa;
 
 
 	//worldSpace -> cameraSpace
@@ -115,7 +119,7 @@ void Camera::moved()
 
 void Camera::movel()
 {
-	worldLocation += ( -(Vec4::dot(lookAt, lookUp)) * speed); 
+	worldLocation += (-(Vec4::dot(lookAt, lookUp)) * speed);
 	Update();
 }
 
@@ -125,7 +129,7 @@ void Camera::movel()
 
 void Camera::mover()
 {
-	worldLocation += (Vec4::dot(lookAt ,lookUp) * speed);
+	worldLocation += ((Vec4::dot(lookAt, lookUp)) * speed);
 	Update();
 }
 

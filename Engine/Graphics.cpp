@@ -447,12 +447,7 @@ void Graphics::DrawTriangle( Pointf4& v0,  Pointf4& v1,  Pointf4& v2, Color c)
 	Pointf4* pv1 = &v1;
 	Pointf4* pv2 = &v2;
 
-	NSTmer.Transform(*pv0);
-	NSTmer.Transform(*pv1);
-	NSTmer.Transform(*pv2);
-
-
-
+	
 
 	//sort
 	if (pv0->y > pv1->y)  std::swap(pv0, pv1);
@@ -534,6 +529,8 @@ void Graphics::DrawFlatTopTriangle(const Pointf4& v0, const Pointf4& v1, const P
 			Pointf4 finalPoint = vPrime + (vPrimePrime - vPrime) * beta;
 			float z = finalPoint.w;
 
+
+
 			if (z > pzBuffer.At(x,y) && z < 0.f) {
 				pzBuffer.Store(x, y, z);
 				PutPixel(x, y, c);
@@ -559,7 +556,6 @@ void Graphics::DrawFlatBottomTriangle(const Pointf4& v0, const Pointf4& v1, cons
 	float m1 = (v0.x - v2.x) / (v0.y - v2.y);
 
 
-
 	int yStart = std::max((int)ceil(v0.y - 0.5f), 0);
 	int yEnd = std::min((int)ceil(v1.y - 0.5f), (int)(Graphics::ScreenHeight)); //exclusive
 
@@ -583,20 +579,23 @@ void Graphics::DrawFlatBottomTriangle(const Pointf4& v0, const Pointf4& v1, cons
 
 			float alpha = (float(y) + 0.5f - v0.y) / (v1.y - v0.y);
 			Pointf4 vPrime = v0 + (v1 - v0) * alpha;
-			Pointf4 vPrimePrime = v1 + (v2 - v0) * alpha;
+			Pointf4 vPrimePrime = v0 + (v2 - v0) * alpha;
 
 			float beta = (float(x) + 0.5f - vPrime.x) / (vPrimePrime.x - vPrime.x);
 			Pointf4 finalPoint = vPrime + (vPrimePrime - vPrime) * beta;
 			float z = finalPoint.w;
+	
 
-			if (z > pzBuffer.At(x, y) && z < 0.f ) {
+
+			if (z > pzBuffer.At(x, y) && z < 0.f) {
 				pzBuffer.Store(x, y, z);
 				PutPixel(x, y, c);
 			}
 
 		}
 
-
+		//Colors::Green;//65280
+		//Colors::Red;  //16711680
 	}
 
 

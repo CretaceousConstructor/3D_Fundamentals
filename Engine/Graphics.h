@@ -111,6 +111,6 @@ public:
 	static constexpr unsigned int ScreenWidth = 800u;
 	static constexpr unsigned int ScreenHeight = 600u;
 	Zbuffer pzBuffer = { (int)ScreenWidth, (int)ScreenHeight };
-	NDCScreenTransformer NSTmer  = { (int)ScreenWidth, (int)ScreenHeight };
+	
 	
 };

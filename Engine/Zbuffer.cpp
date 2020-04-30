@@ -7,7 +7,7 @@ Zbuffer::Zbuffer(int width, int height)
 
 }
 
-float Zbuffer::At(int x, int y)
+float Zbuffer::At(int x, int y) const
 {
 	
 		return zBuffer[(y * w + x)];

@@ -211,6 +211,19 @@ namespace Mat {
 		}
 
 
+		template<typename T>
+		_Point4<T> wPreserveMultiplication(const _Mat4<T>& lhs, const _Point4<T>& rhs)
+		{
+			return
+			{
+				rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2] + (T)1.0 * lhs.elements[0][3],
+				rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2] + (T)1.0 * lhs.elements[1][3],
+				rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2] + (T)1.0 * lhs.elements[2][3],
+				rhs.w,
+
+			};
+		}
+
 
 
 
