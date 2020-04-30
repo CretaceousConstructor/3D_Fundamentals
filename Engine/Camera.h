@@ -29,6 +29,6 @@ public:
 	Vec4 lookAt;
 	Vec4 lookUp;
 	float speed = 0.1f;
-	float rotateSpeed = 0.01f;
+	float rotateSpeed = 0.05f;
 };
 

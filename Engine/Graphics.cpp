@@ -457,7 +457,7 @@ void Graphics::DrawTriangle( Pointf4& v0,  Pointf4& v1,  Pointf4& v2, Color c)
 	//sort
 	if (pv0->y > pv1->y)  std::swap(pv0, pv1);
 	if (pv0->y > pv2->y)  std::swap(pv0, pv2);
-	if (pv1->y > pv2->y)  std::swap(pv1d, pv2);
+	if (pv1->y > pv2->y)  std::swap(pv1, pv2);
 
 	if (pv0->y == pv1->y)  //flat top tri 
 	{

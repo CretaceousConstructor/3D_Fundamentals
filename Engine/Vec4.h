@@ -47,6 +47,13 @@ public:
 	}
 
 
+	_Vec4 operator- () const
+	{
+		_Vec4 result(-x,-y,-z);
+		return result;
+	}
+
+
 
 
 	_Vec4& operator +=(const _Vec4& rhs) {
@@ -86,10 +93,6 @@ public:
 	}
 
 
-	/*_Vec4 operator*(_Vec4 const& v, const T& lhs) const
-	{
-		return _Vec4(v) *= lhs;
-	}*/
 
 	static _Vec4 dot(_Vec4 const& v1, _Vec4 const& v2) {
 

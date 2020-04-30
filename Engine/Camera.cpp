@@ -98,34 +98,50 @@ void Camera::RotateVerticallyB()
 
 void Camera::moveu()
 {
-	worldLocation.y += speed;
+
+
+	worldLocation += ( lookUp * speed);
 	Update();
 }
 
 void Camera::moved()
 {
-	worldLocation.y-= speed;
+	worldLocation += (-lookUp * speed);
 	Update();
 }
+
+
+
+
 void Camera::movel()
 {
-	worldLocation.x -= speed;
+	worldLocation += ( -(Vec4::dot(lookAt, lookUp)) * speed); 
 	Update();
 }
+
+
+
+
+
 void Camera::mover()
 {
-	worldLocation.x += speed;
+	worldLocation += (Vec4::dot(lookAt ,lookUp) * speed);
 	Update();
 }
+
+
+
 
 void Camera::movef()
 {
-	worldLocation.z -= speed;
+	worldLocation  += (lookAt * speed);
 	Update();
-
 }
+
+
 void Camera::moveb()
 {
-	worldLocation.z += speed;
+	
+	worldLocation += (-lookAt * speed);
 	Update();
 }
