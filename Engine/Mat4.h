@@ -43,9 +43,6 @@ public:
 				result.elements[j][k] = sum;
 			}
 		}
-
-		//this one sucks!;
-		//result.elements[3][3] = (T)1.0;
 		return result;
 	}
 

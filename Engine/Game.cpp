@@ -20,14 +20,15 @@
 ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "Mat2.h"
+
 
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	trWorld0({ 0.f,0.5f ,-3.f }, { -0.5f,0.f,-3.f }, { 0.5f,0.f,-3.f }),
-	trWorld1({ 0.f,0.f ,-3.0f }, { -2.f,2.f,-4.f }, { 2.f,2.f,-4.f }),
+	texture1("D:\\CS\\ChiliEngine\\Bmp\\tex.bmp"),
+	trWorld1({ Vertex{Pointf4{ 0.f,0.f ,-3.0f },Vec2{ 0.f,0.f }} , Vertex{ Pointf4{ -2.f,2.f ,-2.f },Vec2{ 0.f,1.f } } , Vertex{ Pointf4{ 2.f,2.f ,-6.0f },Vec2{ 1.f,0.f } } }, { 0,2,1 }, texture1),
+	//                 a                                                              b                                               c
 	camera({ 0.f,0.f,0.f }, { 0.f,0.f,-1.f }, { 0.f,1.f,0.f })
 {
 
@@ -82,20 +83,37 @@ void Game::UpdateModel()
 	}
 
 
-	////worldspace to viewspace
-	//trView0.points[0] = camera.cameraTransformation * trWorld0.points[0];
-	//trView0.points[1] = camera.cameraTransformation * trWorld0.points[1];
-	//trView0.points[2] = camera.cameraTransformation * trWorld0.points[2];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//TO DO:objectspace to worldspace
+
+
+	trPiplined = trWorld1;
+
 
 	//worldspace to viewspace
-	trView1.points[0] = camera.cameraTransformation * trWorld1.points[0];
-	trView1.points[1] = camera.cameraTransformation * trWorld1.points[1];
-	trView1.points[2] = camera.cameraTransformation * trWorld1.points[2];
+	//worldspace to viewspace
+	trPiplined.vertexs[0].p = camera.cameraTransformation * trPiplined.vertexs[0].p;
+	trPiplined.vertexs[1].p = camera.cameraTransformation * trPiplined.vertexs[1].p;
+	trPiplined.vertexs[2].p = camera.cameraTransformation * trPiplined.vertexs[2].p;
 
 
 
 	//backface culling
-	if (Vec4::dot((trView1.points[1] - trView1.points[0]), (trView1.points[2] - trView1.points[1])) * trView1.points[0] > 0.f) {
+	if (Vec4::dot((trPiplined.vertexs[1].p - trPiplined.vertexs[1].p), (trPiplined.vertexs[2].p - trPiplined.vertexs[1].p )) * Vec4(trPiplined.vertexs[0].p) > 0.f) {
 		draw = true;
 	}
 	else {
@@ -103,98 +121,50 @@ void Game::UpdateModel()
 	}
 
 
+	//spectrum to cubnoid
+	trPiplined.vertexs[0].p = camera.perspectiveProjection * trPiplined.vertexs[0].p;
+	trPiplined.vertexs[1].p = camera.perspectiveProjection * trPiplined.vertexs[1].p;
+	trPiplined.vertexs[2].p = camera.perspectiveProjection * trPiplined.vertexs[2].p;
 
-	////spectrum to cubnoid
-	//trCubnoid0.points[0] = camera.perspectiveProjection * trView0.points[0];
-	//trCubnoid0.points[1] = camera.perspectiveProjection * trView0.points[1];
-	//trCubnoid0.points[2] = camera.perspectiveProjection * trView0.points[2];
-
-
-	trCubnoid1.points[0] = camera.perspectiveProjection * trView1.points[0];
-	trCubnoid1.points[1] = camera.perspectiveProjection * trView1.points[1];
-	trCubnoid1.points[2] = camera.perspectiveProjection * trView1.points[2];
-
-
-	//
-	////preserve z value in w and "actually" do perspectiveProjection to x and y,
-	//	Mat4 recoverMat0 = Mat4::Identity() * (1.f / trCubnoid0.points[0].w);
-	//	recoverMat0.elements[3][3] = 1.f;
-	//	Mat4 recoverMat1 = Mat4::Identity() * (1.f / trCubnoid0.points[1].w);
-	//	recoverMat1.elements[3][3] = 1.f;
-	//	Mat4 recoverMat2 = Mat4::Identity() * (1.f / trCubnoid0.points[2].w);
-	//	recoverMat2.elements[3][3] = 1.f;
-
-	// trCubnoid0.points[0] = (recoverMat0) * trCubnoid0.points[0];
-	// trCubnoid0.points[1] = (recoverMat1) * trCubnoid0.points[1];
-	// trCubnoid0.points[2] = (recoverMat2) * trCubnoid0.points[2];
-
-
-
-
-
-	 //preserve z value in w and "actually" do perspectiveProjection to x and y,
-	/*Mat4  recoverMat0 = Mat4::Identity() * (1.f / trCubnoid1.points[0].w);
-	recoverMat0.elements[3][3] = 1.f;
-	Mat4   recoverMat1 = Mat4::Identity() * (1.f / trCubnoid1.points[1].w);
-	recoverMat1.elements[3][3] = 1.f;
-	Mat4   recoverMat2 = Mat4::Identity() * (1.f / trCubnoid1.points[2].w);
-	recoverMat2.elements[3][3] = 1.f;
-
-	trCubnoid1.points[0] = (recoverMat0)*trCubnoid1.points[0];
-	trCubnoid1.points[1] = (recoverMat1)*trCubnoid1.points[1];
-	trCubnoid1.points[2] = (recoverMat2)*trCubnoid1.points[2];*/
 
 	//cubnoid to NDC
-	trNDC1.points[0] = camera.orthographicPro * trCubnoid1.points[0];
-	trNDC1.points[1] = camera.orthographicPro * trCubnoid1.points[1];
-	trNDC1.points[2] = camera.orthographicPro * trCubnoid1.points[2];
+	trPiplined.vertexs[0].p = camera.orthographicPro * trPiplined.vertexs[0].p;
+	trPiplined.vertexs[1].p = camera.orthographicPro * trPiplined.vertexs[1].p;
+	trPiplined.vertexs[2].p = camera.orthographicPro * trPiplined.vertexs[2].p;
+
+
+	//preserve 1/z value in w and "actually" do perspectiveProjection to x and y,
+	//1/z will be used later to do perspective correct interpolation
+	float tempZricapical = 1.f / trPiplined.vertexs[0].p.w;
+	trPiplined.vertexs[0] *= tempZricapical;
+	trPiplined.vertexs[0].p.w = tempZricapical;
+
+	tempZricapical = 1.f / trPiplined.vertexs[1].p.w;
+	trPiplined.vertexs[1] *= tempZricapical;
+	trPiplined.vertexs[1].p.w = tempZricapical;
+
+	tempZricapical = 1.f / trPiplined.vertexs[2].p.w;
+	trPiplined.vertexs[2] *= (1.f/trPiplined.vertexs[2].p.w);
+	trPiplined.vertexs[2].p.w = tempZricapical;
 
 
 
-		//
-		//preserve z value in w and "actually" do perspectiveProjection to x and y,
-		Mat4 recoverMat0 = Mat4::Identity() * (1.f / trCubnoid1.points[0].w);
-		recoverMat0.elements[3][3] = 1.f;
-		Mat4 recoverMat1 = Mat4::Identity() * (1.f / trCubnoid1.points[1].w);
-		recoverMat1.elements[3][3] = 1.f;
-		Mat4 recoverMat2 = Mat4::Identity() * (1.f / trCubnoid1.points[2].w);
-		recoverMat2.elements[3][3] = 1.f;
+	NSTmer.Transform(trPiplined.vertexs[0].p);
+	NSTmer.Transform(trPiplined.vertexs[1].p);
+	NSTmer.Transform(trPiplined.vertexs[2].p);
 
-		trNDC1.points[0] = (recoverMat0)*trNDC1.points[0];
-		trNDC1.points[1] = (recoverMat1)*trNDC1.points[1];
-		trNDC1.points[2] = (recoverMat2)*trNDC1.points[2];
 
-	
-		//trNDC1.points[0] = wPreserveMultiplication(camera.TransMa, trCubnoid1.points[0]);
-		//trNDC1.points[1] = wPreserveMultiplication(camera.TransMa, trCubnoid1.points[1]);
-		//trNDC1.points[2] = wPreserveMultiplication(camera.TransMa, trCubnoid1.points[2]);
-	
-	
-		//trNDC1.points[0] = camera.ScaleMa * trNDC1.points[0];
-		//trNDC1.points[1] = camera.ScaleMa * trNDC1.points[1];
-		//trNDC1.points[2] = camera.ScaleMa * trNDC1.points[2];
-	
-	
-	
-		//NSTmer.Transform(trNDC0.points[0]);
-		//NSTmer.Transform(trNDC0.points[1]);
-		//NSTmer.Transform(trNDC0.points[2]);
-	
-		NSTmer.Transform(trNDC1.points[0]);
-		NSTmer.Transform(trNDC1.points[1]);
-		NSTmer.Transform(trNDC1.points[2]);
 
 }
 
 void Game::ComposeFrame()
 {
 
-	//trNDC.GetDraw(gfx);
+	//if (draw) {
+		//gfx.DrawTriangle(trNDC1.points[0], trNDC1.points[1], trNDC1.points[2], Colors::Red);
+		gfx.DrawTriangle(trPiplined);
+	//}
 
 
-	gfx.DrawTriangle(trNDC1.points[0], trNDC1.points[1], trNDC1.points[2], Colors::Red);
-
-
-	//gfx.DrawTriangle(trNDC0.points[0], trNDC0.points[1], trNDC0.points[2],Colors::Green);
 
 }

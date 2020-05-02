@@ -1,24 +1,19 @@
 #pragma once
-#include <array>
-#include <vector>
 
-#include "Colors.h"
-#include "Vec4.h"
-#include "Point4.h"
-#include "Graphics.h"
-#include "Vec2.h"
-#include "ChiliMath.h"
-#include "minwindef.h"
+#include <vector>
+#include "Sprite.h"
+#include "Vertex.h"
+
+
 class Triangle
 {
 public:
-	Triangle(Pointf4 a, Pointf4 b, Pointf4 c);
 	Triangle();
-	void Triangle::GetDraw(Graphics& GFX);
-	void Triangle::GetDraw(Graphics& GFX, int a);
-	void GetDraw(Graphics& GFX,float focalLength);
-	std::vector<Pointf4> points;
+	Triangle(std::vector<Vertex> vertexs, std::vector<int> index, const texture& t);
 
+	std::vector<int> index;
+	std::vector<Vertex> vertexs;
+	const texture* surf;
 
 };
 

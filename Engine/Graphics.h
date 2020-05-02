@@ -23,6 +23,7 @@
 #include <wrl.h>
 #include "GDIPlusManager.h"
 #include "ChiliException.h"
+#include "ChiliWin.h"
 #include "Surface.h"
 #include "Colors.h"
 #include "Vec2.h"
@@ -30,7 +31,7 @@
 #include <memory>
 #include "Zbuffer.h"
 #include "NDCScreenTransformer.h"
-
+#include "Triangle.h"
 #include "Vec4.h"
 #define CHILI_GFX_EXCEPTION( hr,note ) Graphics::Exception( hr,note,_CRT_WIDE(__FILE__),__LINE__ )
 
@@ -77,21 +78,31 @@ public:
 
 
 	void DrawTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2,Color c);
+
 	void DrawTriangle( Pointf4& v0,  Pointf4& v1,  Pointf4& v2,Color c);
 
-
-
+	void DrawTriangle( Triangle& tr);
 
 	//ALL STATRT from top vertex
 	~Graphics();
 private:
+
+
+
 	void DrawFlatTopTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c);//draw in clockwise order 
 	void DrawFlatBottomTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c);//draw in counterclockwise order 
 
-
-
-	   void DrawFlatTopTriangle(const Pointf4& v0, const Pointf4& v1, const Pointf4& v2, Color c);//draw in clockwise order 
+	void DrawFlatTopTriangle(const Pointf4& v0, const Pointf4& v1, const Pointf4& v2, Color c);//draw in clockwise order 
 	void DrawFlatBottomTriangle(const Pointf4& v0, const Pointf4& v1, const Pointf4& v2, Color c);//draw in counterclockwise order 
+
+
+	void Graphics::DrawFlatTopTriangle(Triangle& tr, Vertex& v0, Vertex& v1, Vertex& v2);//draw in clockwise order 
+
+	void Graphics::DrawFlatBottomTriangle(Triangle& tr, Vertex& v0, Vertex& v1, Vertex& v2);//draw in counterclockwise order 
+
+
+	Color GetColorFromTexture(Vec2 uv,const texture& tex);
+
 private:
 	GDIPlusManager										gdipMan;
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;

@@ -4,30 +4,38 @@
 #include <iostream>
 #include <memory>
 #include "Colors.h"
-#include "Graphics.h"
+
 #include "Vec2.h"
 #include "Mat2.h"
-//#include "Character.h"
 
 
-class Sprite
+
+class texture
 {
 public:
 	class rect;
 	
-	
-	Sprite(std::string bmpFileName);
+	texture() = default;
 
-	void GetDraw(Graphics& GFX,rect rec,Vec2 p);
-	void GetDraw(Graphics& GFX, rect rec, Vec2 p, float scaleFactor);
-	void Sprite::GetDrawWithoutClipping(Graphics& GFX, rect rec, Vec2 p, float scaleFactor);
+	texture(std::string bmpFileName);
 
-	inline int GetWidth() {
+	//void GetDraw(Graphics& GFX,rect rec,Vec2 p);
+	//void GetDraw(Graphics& GFX, rect rec, Vec2 p, float scaleFactor);
+	//void texture::GetDrawWithoutClipping(Graphics& GFX, rect rec, Vec2 p, float scaleFactor);
+
+	inline int GetWidth() const {
 		return width;
 	}
-	inline int GetHeight() {
+	inline int GetHeight() const {
 		return height;
 	}
+
+	Color GetColor(int x, int y)const {
+
+		return bitMap[(height-y )* width + x];
+
+	}
+
 	class rect {
 	public:
 		inline rect(int t, int l, int r, int b)

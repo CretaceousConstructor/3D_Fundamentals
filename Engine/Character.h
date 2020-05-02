@@ -23,9 +23,9 @@ private:
 
 	int actionAccount;
 	int columnsOfAction;
-	std::vector<Sprite::rect> chara;
-	Sprite sp;
-	std::vector<Sprite::rect>::iterator itr;
+	std::vector<texture::rect> chara;
+	texture sp;
+	std::vector<texture::rect>::iterator itr;
 	float holdTime = 0.1f;
 	float accumulationVar = 0.f;
 	Color BackGroundColor = Colors::Magenta;

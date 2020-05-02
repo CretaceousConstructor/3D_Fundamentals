@@ -39,11 +39,11 @@ namespace FramebufferShaders
 
 using Microsoft::WRL::ComPtr;
 
-Graphics::Graphics( HWNDKey& key )
+Graphics::Graphics(HWNDKey& key)
 	:
-	sysBuffer( ScreenWidth,ScreenHeight )
+	sysBuffer(ScreenWidth, ScreenHeight)
 {
-	assert( key.hWnd != nullptr );
+	assert(key.hWnd != nullptr);
 
 	//////////////////////////////////////////////////////
 	// create device and swap chain/get render target view
@@ -70,9 +70,9 @@ Graphics::Graphics( HWNDKey& key )
 	createFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 #endif
-	
+
 	// create device and front/back buffers
-	if( FAILED( hr = D3D11CreateDeviceAndSwapChain( 
+	if (FAILED(hr = D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		nullptr,
@@ -84,44 +84,44 @@ Graphics::Graphics( HWNDKey& key )
 		&pSwapChain,
 		&pDevice,
 		&featureLevelsSupported,
-		&pImmediateContext ) ) )
+		&pImmediateContext)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating device and swap chain" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating device and swap chain");
 	}
 
 	// get handle to backbuffer
 	ComPtr<ID3D11Resource> pBackBuffer;
-	if( FAILED( hr = pSwapChain->GetBuffer(
+	if (FAILED(hr = pSwapChain->GetBuffer(
 		0,
-		__uuidof( ID3D11Texture2D ),
-		(LPVOID*)&pBackBuffer ) ) )
+		__uuidof(ID3D11Texture2D),
+		(LPVOID*)&pBackBuffer)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Getting back buffer" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Getting back buffer");
 	}
 
 	// create a view on backbuffer that we can render to
-	if( FAILED( hr = pDevice->CreateRenderTargetView( 
+	if (FAILED(hr = pDevice->CreateRenderTargetView(
 		pBackBuffer.Get(),
 		nullptr,
-		&pRenderTargetView ) ) )
+		&pRenderTargetView)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating render target view on backbuffer" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating render target view on backbuffer");
 	}
 
 
 	// set backbuffer as the render target using created view
-	pImmediateContext->OMSetRenderTargets( 1,pRenderTargetView.GetAddressOf(),nullptr );
+	pImmediateContext->OMSetRenderTargets(1, pRenderTargetView.GetAddressOf(), nullptr);
 
 
 	// set viewport dimensions
 	D3D11_VIEWPORT vp;
-	vp.Width = float( Graphics::ScreenWidth );
-	vp.Height = float( Graphics::ScreenHeight );
+	vp.Width = float(Graphics::ScreenWidth);
+	vp.Height = float(Graphics::ScreenHeight);
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0.0f;
 	vp.TopLeftY = 0.0f;
-	pImmediateContext->RSSetViewports( 1,&vp );
+	pImmediateContext->RSSetViewports(1, &vp);
 
 
 	///////////////////////////////////////
@@ -139,9 +139,9 @@ Graphics::Graphics( HWNDKey& key )
 	sysTexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	sysTexDesc.MiscFlags = 0;
 	// create the texture
-	if( FAILED( hr = pDevice->CreateTexture2D( &sysTexDesc,nullptr,&pSysBufferTexture ) ) )
+	if (FAILED(hr = pDevice->CreateTexture2D(&sysTexDesc, nullptr, &pSysBufferTexture)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating sysbuffer texture" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating sysbuffer texture");
 	}
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
@@ -149,38 +149,38 @@ Graphics::Graphics( HWNDKey& key )
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;
 	// create the resource view on the texture
-	if( FAILED( hr = pDevice->CreateShaderResourceView( pSysBufferTexture.Get(),
-		&srvDesc,&pSysBufferTextureView ) ) )
+	if (FAILED(hr = pDevice->CreateShaderResourceView(pSysBufferTexture.Get(),
+		&srvDesc, &pSysBufferTextureView)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating view on sysBuffer texture" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating view on sysBuffer texture");
 	}
 
 
 	////////////////////////////////////////////////
 	// create pixel shader for framebuffer
 	// Ignore the intellisense error "namespace has no member"
-	if( FAILED( hr = pDevice->CreatePixelShader(
+	if (FAILED(hr = pDevice->CreatePixelShader(
 		FramebufferShaders::FramebufferPSBytecode,
-		sizeof( FramebufferShaders::FramebufferPSBytecode ),
+		sizeof(FramebufferShaders::FramebufferPSBytecode),
 		nullptr,
-		&pPixelShader ) ) )
+		&pPixelShader)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating pixel shader" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating pixel shader");
 	}
-	
+
 
 	/////////////////////////////////////////////////
 	// create vertex shader for framebuffer
 	// Ignore the intellisense error "namespace has no member"
-	if( FAILED( hr = pDevice->CreateVertexShader(
+	if (FAILED(hr = pDevice->CreateVertexShader(
 		FramebufferShaders::FramebufferVSBytecode,
-		sizeof( FramebufferShaders::FramebufferVSBytecode ),
+		sizeof(FramebufferShaders::FramebufferVSBytecode),
 		nullptr,
-		&pVertexShader ) ) )
+		&pVertexShader)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating vertex shader" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating vertex shader");
 	}
-	
+
 
 	//////////////////////////////////////////////////////////////
 	// create and fill vertex buffer with quad for rendering frame
@@ -195,17 +195,17 @@ Graphics::Graphics( HWNDKey& key )
 	};
 	D3D11_BUFFER_DESC bd = {};
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof( FSQVertex ) * 6;
+	bd.ByteWidth = sizeof(FSQVertex) * 6;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0u;
 	D3D11_SUBRESOURCE_DATA initData = {};
 	initData.pSysMem = vertices;
-	if( FAILED( hr = pDevice->CreateBuffer( &bd,&initData,&pVertexBuffer ) ) )
+	if (FAILED(hr = pDevice->CreateBuffer(&bd, &initData, &pVertexBuffer)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating vertex buffer" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating vertex buffer");
 	}
 
-	
+
 	//////////////////////////////////////////
 	// create input layout for fullscreen quad
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
@@ -215,12 +215,12 @@ Graphics::Graphics( HWNDKey& key )
 	};
 
 	// Ignore the intellisense error "namespace has no member"
-	if( FAILED( hr = pDevice->CreateInputLayout( ied,2,
+	if (FAILED(hr = pDevice->CreateInputLayout(ied, 2,
 		FramebufferShaders::FramebufferVSBytecode,
-		sizeof( FramebufferShaders::FramebufferVSBytecode ),
-		&pInputLayout ) ) )
+		sizeof(FramebufferShaders::FramebufferVSBytecode),
+		&pInputLayout)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating input layout" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating input layout");
 	}
 
 
@@ -234,16 +234,16 @@ Graphics::Graphics( HWNDKey& key )
 	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 	sampDesc.MinLOD = 0;
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-	if( FAILED( hr = pDevice->CreateSamplerState( &sampDesc,&pSamplerState ) ) )
+	if (FAILED(hr = pDevice->CreateSamplerState(&sampDesc, &pSamplerState)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Creating sampler state" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Creating sampler state");
 	}
 }
 
 Graphics::~Graphics()
 {
 	// clear the state of the device context before destruction
-	if( pImmediateContext ) pImmediateContext->ClearState();
+	if (pImmediateContext) pImmediateContext->ClearState();
 }
 
 void Graphics::EndFrame()
@@ -251,49 +251,49 @@ void Graphics::EndFrame()
 	HRESULT hr;
 
 	// lock and map the adapter memory for copying over the sysbuffer
-	if( FAILED( hr = pImmediateContext->Map( pSysBufferTexture.Get(),0u,
-		D3D11_MAP_WRITE_DISCARD,0u,&mappedSysBufferTexture ) ) )
+	if (FAILED(hr = pImmediateContext->Map(pSysBufferTexture.Get(), 0u,
+		D3D11_MAP_WRITE_DISCARD, 0u, &mappedSysBufferTexture)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Mapping sysbuffer" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Mapping sysbuffer");
 	}
 	// perform the copy line-by-line
-	sysBuffer.Present( mappedSysBufferTexture.RowPitch,
-		reinterpret_cast<BYTE*>(mappedSysBufferTexture.pData) );
+	sysBuffer.Present(mappedSysBufferTexture.RowPitch,
+		reinterpret_cast<BYTE*>(mappedSysBufferTexture.pData));
 	// release the adapter memory
-	pImmediateContext->Unmap( pSysBufferTexture.Get(),0u );
+	pImmediateContext->Unmap(pSysBufferTexture.Get(), 0u);
 
 	// render offscreen scene texture to back buffer
-	pImmediateContext->IASetInputLayout( pInputLayout.Get() );
-	pImmediateContext->VSSetShader( pVertexShader.Get(),nullptr,0u );
-	pImmediateContext->PSSetShader( pPixelShader.Get(),nullptr,0u );
-	pImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
-	const UINT stride = sizeof( FSQVertex );
+	pImmediateContext->IASetInputLayout(pInputLayout.Get());
+	pImmediateContext->VSSetShader(pVertexShader.Get(), nullptr, 0u);
+	pImmediateContext->PSSetShader(pPixelShader.Get(), nullptr, 0u);
+	pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	const UINT stride = sizeof(FSQVertex);
 	const UINT offset = 0u;
-	pImmediateContext->IASetVertexBuffers( 0u,1u,pVertexBuffer.GetAddressOf(),&stride,&offset );
-	pImmediateContext->PSSetShaderResources( 0u,1u,pSysBufferTextureView.GetAddressOf() );
-	pImmediateContext->PSSetSamplers( 0u,1u,pSamplerState.GetAddressOf() );
-	pImmediateContext->Draw( 6u,0u );
+	pImmediateContext->IASetVertexBuffers(0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset);
+	pImmediateContext->PSSetShaderResources(0u, 1u, pSysBufferTextureView.GetAddressOf());
+	pImmediateContext->PSSetSamplers(0u, 1u, pSamplerState.GetAddressOf());
+	pImmediateContext->Draw(6u, 0u);
 
 	// flip back/front buffers
-	if( FAILED( hr = pSwapChain->Present( 1u,0u ) ) )
+	if (FAILED(hr = pSwapChain->Present(1u, 0u)))
 	{
-		throw CHILI_GFX_EXCEPTION( hr,L"Presenting back buffer" );
+		throw CHILI_GFX_EXCEPTION(hr, L"Presenting back buffer");
 	}
 }
 
 void Graphics::BeginFrame()
 {
-	sysBuffer.Clear( Colors::Red );
+	sysBuffer.Clear(Colors::Red);
 	pzBuffer.Clear();
 }
 
 
 //////////////////////////////////////////////////
 //           Graphics Exception
-Graphics::Exception::Exception( HRESULT hr,const std::wstring& note,const wchar_t* file,unsigned int line )
+Graphics::Exception::Exception(HRESULT hr, const std::wstring& note, const wchar_t* file, unsigned int line)
 	:
-	ChiliException( file,line,note ),
-	hr( hr )
+	ChiliException(file, line, note),
+	hr(hr)
 {}
 
 std::wstring Graphics::Exception::GetFullMessage() const
@@ -303,25 +303,25 @@ std::wstring Graphics::Exception::GetFullMessage() const
 	const std::wstring errorDesc = GetErrorDescription();
 	const std::wstring& note = GetNote();
 	const std::wstring location = GetLocation();
-	return    (!errorName.empty() ? std::wstring( L"Error: " ) + errorName + L"\n"
+	return    (!errorName.empty() ? std::wstring(L"Error: ") + errorName + L"\n"
 		: empty)
-		+ (!errorDesc.empty() ? std::wstring( L"Description: " ) + errorDesc + L"\n"
+		+ (!errorDesc.empty() ? std::wstring(L"Description: ") + errorDesc + L"\n"
 			: empty)
-		+ (!note.empty() ? std::wstring( L"Note: " ) + note + L"\n"
+		+ (!note.empty() ? std::wstring(L"Note: ") + note + L"\n"
 			: empty)
-		+ (!location.empty() ? std::wstring( L"Location: " ) + location
+		+ (!location.empty() ? std::wstring(L"Location: ") + location
 			: empty);
 }
 
 std::wstring Graphics::Exception::GetErrorName() const
 {
-	return DXGetErrorString( hr );
+	return DXGetErrorString(hr);
 }
 
 std::wstring Graphics::Exception::GetErrorDescription() const
 {
-	std::array<wchar_t,512> wideDescription;
-	DXGetErrorDescription( hr,wideDescription.data(),wideDescription.size() );
+	std::array<wchar_t, 512> wideDescription;
+	DXGetErrorDescription(hr, wideDescription.data(), wideDescription.size());
 	return wideDescription.data();
 }
 
@@ -330,55 +330,55 @@ std::wstring Graphics::Exception::GetExceptionType() const
 	return L"Chili Graphics Exception";
 }
 
-void Graphics::DrawLine( float x1,float y1,float x2,float y2,Color c )
+void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 {
 	const float dx = x2 - x1;
 	const float dy = y2 - y1;
 
-	if( dy == 0.0f && dx == 0.0f )
+	if (dy == 0.0f && dx == 0.0f)
 	{
-		PutPixel( int( x1 ),int( y1 ),c );
+		PutPixel(int(x1), int(y1), c);
 	}
-	else if( abs( dy ) > abs( dx ) )
+	else if (abs(dy) > abs(dx))
 	{
-		if( dy < 0.0f )
+		if (dy < 0.0f)
 		{
-			std::swap( x1,x2 );
-			std::swap( y1,y2 );
+			std::swap(x1, x2);
+			std::swap(y1, y2);
 		}
 
 		const float m = dx / dy;
 		float y = y1;
 		int lastIntY;
-		for( float x = x1; y < y2; y += 1.0f,x += m )
+		for (float x = x1; y < y2; y += 1.0f, x += m)
 		{
-			lastIntY = int( y );
-			PutPixel( int( x ),lastIntY,c );
+			lastIntY = int(y);
+			PutPixel(int(x), lastIntY, c);
 		}
-		if( int( y2 ) > lastIntY )
+		if (int(y2) > lastIntY)
 		{
-			PutPixel( int( x2 ),int( y2 ),c );
+			PutPixel(int(x2), int(y2), c);
 		}
 	}
 	else
 	{
-		if( dx < 0.0f )
+		if (dx < 0.0f)
 		{
-			std::swap( x1,x2 );
-			std::swap( y1,y2 );
+			std::swap(x1, x2);
+			std::swap(y1, y2);
 		}
 
 		const float m = dy / dx;
 		float x = x1;
 		int lastIntX;
-		for( float y = y1; x < x2; x += 1.0f,y += m )
+		for (float y = y1; x < x2; x += 1.0f, y += m)
 		{
-			lastIntX = int( x );
-			PutPixel( lastIntX,int( y ),c );
+			lastIntX = int(x);
+			PutPixel(lastIntX, int(y), c);
 		}
-		if( int( x2 ) > lastIntX )
+		if (int(x2) > lastIntX)
 		{
-			PutPixel( int( x2 ),int( y2 ),c );
+			PutPixel(int(x2), int(y2), c);
 		}
 	}
 
@@ -390,112 +390,88 @@ void Graphics::DrawLine( float x1,float y1,float x2,float y2,Color c )
 
 }
 
-void Graphics::DrawTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c)
+
+
+void Graphics::DrawTriangle(Triangle& tr)
 {
+
 	//sort them so that v0 at top,v2 at the bottom 
-	const Vec2* pv0 = &v0;
-	const Vec2* pv1 = &v1;
-	const Vec2* pv2 = &v2;
-
+	const int* pI0 = &tr.index[0];
+	const int* pI1 = &tr.index[1];
+	const int* pI2 = &tr.index[2];
 	//sort
-	if (pv0->y > pv1->y)  std::swap(pv0, pv1);
-	if (pv0->y > pv2->y)  std::swap(pv0, pv2);
-	if (pv1->y > pv2->y)  std::swap(pv1, pv2);
+	if (tr.vertexs[*pI0].p.y > tr.vertexs[*pI1].p.y)  std::swap(pI0, pI1);
+	if (tr.vertexs[*pI0].p.y > tr.vertexs[*pI2].p.y)  std::swap(pI0, pI2);
+	if (tr.vertexs[*pI1].p.y > tr.vertexs[*pI2].p.y)  std::swap(pI1, pI2);
 
-	if (pv0->y == pv1->y)  //flat top tri 
+
+	if (tr.vertexs[*pI0].p.y == tr.vertexs[*pI1].p.y)  //flat top tri 
 	{
-		if (pv0->x > pv1->x) {
-			std::swap(pv0, pv1);
+		if (tr.vertexs[*pI0].p.x > tr.vertexs[*pI1].p.x) {
+			std::swap(pI0, pI1);
 		}
-		DrawFlatTopTriangle(*pv0, *pv1, *pv2, c);
 
-
+		DrawFlatTopTriangle(tr, tr.vertexs[*pI0], tr.vertexs[*pI1], tr.vertexs[*pI2]);
 	}
-	else if (pv1->y == pv2->y)  //flat bottom tri 
+
+	else if (tr.vertexs[*pI1].p.y == tr.vertexs[*pI2].p.y)  //flat bottom tri 
 	{
-		if (pv1->x > pv2->x) {
-			std::swap(pv1, pv2);
+		if (tr.vertexs[*pI1].p.x > tr.vertexs[*pI2].p.x) {
+			std::swap(pI1, pI2);
 		}
-		DrawFlatBottomTriangle(*pv0, *pv1, *pv2, c);
+
+		DrawFlatBottomTriangle(tr, tr.vertexs[*pI0], tr.vertexs[*pI1], tr.vertexs[*pI2]);
 	}
 
 	else { //general tir
 
-		const float alpha = (pv1->y - pv0->y) / (pv2->y - pv0->y);
+		const float alpha = (tr.vertexs[*pI1].p.y - tr.vertexs[*pI0].p.y) / (tr.vertexs[*pI2].p.y - tr.vertexs[*pI0].p.y);
 
-		const Vec2 vi = *pv0 + (*pv2 - *pv0) * alpha;
-		if (vi.x > pv1->x) //major right
+		Vertex vi = tr.vertexs[*pI0] + (tr.vertexs[*pI2] - tr.vertexs[*pI0]) * alpha;
+		
+		if (vi.p.x > tr.vertexs[*pI1].p.x) //major right
 		{
-			DrawFlatBottomTriangle(*pv0, *pv1, vi, c);
-			DrawFlatTopTriangle(*pv1, vi, *pv2, c);
+			//counterclockwise order
+				//          v0
+				//         /  \ 
+				//        /    \
+				//       v1----v2
+
+			DrawFlatBottomTriangle(tr, tr.vertexs[*pI0],  tr.vertexs[*pI1] , vi);
+			//clockwise order
+				// v0--------v1
+				//   \      /
+				// v' \    / v''
+				//      v2
+
+			DrawFlatTopTriangle(tr,tr.vertexs[*pI1], vi, tr.vertexs[*pI2]);
 		}
 		else//major left
 		{
+			//counterclockwise order
+				//          v0
+				//         /  \ 
+				//        /    \
+				//       v1----v2
 
-			DrawFlatBottomTriangle(*pv0, vi, *pv1, c);
-			DrawFlatTopTriangle(vi, *pv1, *pv2, c);
+			DrawFlatBottomTriangle(tr, tr.vertexs[*pI0], vi, tr.vertexs[*pI1]);
+			//clockwise order
+				// v0--------v1
+				//   \      /
+				// v' \    / v''
+				//      v2
+
+			DrawFlatTopTriangle(tr, vi, tr.vertexs[*pI1], tr.vertexs[*pI2]);
 		}
 	}
-
-}
-
-void Graphics::DrawTriangle( Pointf4& v0,  Pointf4& v1,  Pointf4& v2, Color c)
-{
-
-	//sort them so that v0 at top,v2 at the bottom 
-	Pointf4* pv0 = &v0;
-	Pointf4* pv1 = &v1;
-	Pointf4* pv2 = &v2;
-
-	
-
-	//sort
-	if (pv0->y > pv1->y)  std::swap(pv0, pv1);
-	if (pv0->y > pv2->y)  std::swap(pv0, pv2);
-	if (pv1->y > pv2->y)  std::swap(pv1, pv2);
-
-	if (pv0->y == pv1->y)  //flat top tri 
-	{
-		if (pv0->x > pv1->x) {
-			std::swap(pv0, pv1);
-		}
-		DrawFlatTopTriangle(*pv0, *pv1, *pv2, c);
-	}
-	else if (pv1->y == pv2->y)  //flat bottom tri 
-	{
-		if (pv1->x > pv2->x) {
-			std::swap(pv1, pv2);
-		}
-		DrawFlatBottomTriangle(*pv0, *pv1, *pv2, c);
-	}
-
-	else { //general tir
-
-		const float alpha = (pv1->y - pv0->y) / (pv2->y - pv0->y);
-
-		const Pointf4 vi = *pv0 + (*pv2 - *pv0) * alpha;
-
-		if (vi.x > pv1->x) //major right
-		{
-			DrawFlatBottomTriangle(*pv0, *pv1, vi, c);
-			DrawFlatTopTriangle(*pv1, vi, *pv2, c);
-		}
-		else//major left
-		{
-
-			DrawFlatBottomTriangle(*pv0, vi, *pv1, c);
-			DrawFlatTopTriangle(vi, *pv1, *pv2, c);
-		}
-	}
-
 
 
 
 }
 
+void Graphics::DrawFlatTopTriangle(Triangle& tr, Vertex& v0, Vertex& v1, Vertex& v2) {
 
-void Graphics::DrawFlatTopTriangle(const Pointf4& v0, const Pointf4& v1, const Pointf4& v2, Color c)//draw in clockwise order 
-{
+
 
 	// v0--------v1
 	//   \      /
@@ -503,67 +479,67 @@ void Graphics::DrawFlatTopTriangle(const Pointf4& v0, const Pointf4& v1, const P
 	//      v2
 	// z negtive
 
-	if (v2.y < 0.f || v1.x < 0.f || v0.y >= float(Graphics::ScreenHeight)) return;
+	if (v2.p.y < 0.f || v1.p.x < 0.f || v0.p.y >= float(Graphics::ScreenHeight)) return;
 
 	//run over rise ,avoid vertical fuck up
-	float m0 = (v2.x - v0.x) / (v2.y - v0.y);
-	float m1 = (v2.x - v1.x) / (v2.y - v1.y);
+	float m0 = (v2.p.x - v0.p.x) / (v2.p.y - v0.p.y);
+	float m1 = (v2.p.x - v1.p.x) / (v2.p.y - v1.p.y);
 
 
 	//scanline start and end
-	const int yStart = std::max((int)ceil(v0.y - 0.5f), 0);
-	const int yEnd = std::min((int)ceil(v2.y - 0.5f), (int)(Graphics::ScreenHeight)); //exclusive this last one
+	const int yStart = std::max((int)ceil(v0.p.y - 0.5f), 0);
+	const int yEnd = std::min((int)ceil(v2.p.y - 0.5f), (int)(Graphics::ScreenHeight)); //exclusive this last one
 
 	for (int y = yStart; y < yEnd; y++)
 	{
-		const float px0 = m0 * (float(y) + 0.5f - v0.y) + v0.x;
-		const float px1 = m1 * (float(y) + 0.5f - v1.y) + v1.x;
+		const float px0 = m0 * (float(y) + 0.5f - v0.p.y) + v0.p.x;
+		const float px1 = m1 * (float(y) + 0.5f - v1.p.y) + v1.p.x;
 		const int xStart = std::max((int)ceil(px0 - 0.5f), 0);
 		const int xEnd = std::min((int)ceil(px1 - 0.5f), (int)(Graphics::ScreenWidth));//exclusive
 
 		for (int x = xStart; x < xEnd; x++) {
-			float alpha = (float(y) + 0.5f - v0.y) / (v2.y - v0.y);
-			Pointf4 vPrime = v0 + (v2 - v0) * alpha;
-			Pointf4 vPrimePrime = v1 + (v2 - v1) * alpha;
-			float beta = (float(x) + 0.5f - vPrime.x) / (vPrimePrime.x - vPrime.x);
-			Pointf4 finalPoint = vPrime + (vPrimePrime - vPrime) * beta;
-			float z = finalPoint.w;
+			float alpha = (float(y) + 0.5f - v0.p.y) / (v2.p.y - v0.p.y);
+			Vertex vPrime = v0 + (v2 - v0) * alpha;
+			Vertex vPrimePrime = v1 + (v2 - v1) * alpha;
+			float beta = (float(x) + 0.5f - vPrime.p.x) / (vPrimePrime.p.x - vPrime.p.x);
+			Vertex finalPoint = vPrime + (vPrimePrime - vPrime) * beta;
+			float recipicalOfz = finalPoint.p.w;
+			float z = 1.f / recipicalOfz;
 
-
-
-			if (z > pzBuffer.At(x,y) && z < 0.f) {
+			if (recipicalOfz > pzBuffer.At(x, y)) {
 				pzBuffer.Store(x, y, z);
-				PutPixel(x, y, c);
+				PutPixel(x, y, GetColorFromTexture(finalPoint.uvCoordinate * z, *tr.surf));
 			}
+			
 		}
 	}
 }
 
-void Graphics::DrawFlatBottomTriangle(const Pointf4& v0, const Pointf4& v1, const Pointf4& v2, Color c)//draw in counterclockwise order 
+void Graphics::DrawFlatBottomTriangle(Triangle& tr, Vertex& v0, Vertex& v1, Vertex& v2)
 {
-
 	//          v0
     //         /  \ 
     //        /    \
 	//       v1----v2
 
 
-	if (v2.y < 0.f || v2.x < 0.f || v0.y >= float(Graphics::ScreenHeight)) return;
+	if (v2.p.y < 0.f || v2.p.x < 0.f || v0.p.y >= float(Graphics::ScreenHeight)) return;
+
+	float m0 = (v0.p.x - v1.p.x) / (v0.p.y - v1.p.y);
+	float m1 = (v0.p.x - v2.p.x) / (v0.p.y - v2.p.y);
 
 
 
-	float m0 = (v0.x - v1.x) / (v0.y - v1.y);
-	float m1 = (v0.x - v2.x) / (v0.y - v2.y);
 
 
-	int yStart = std::max((int)ceil(v0.y - 0.5f), 0);
-	int yEnd = std::min((int)ceil(v1.y - 0.5f), (int)(Graphics::ScreenHeight)); //exclusive
+	int yStart = std::max((int)ceil(v0.p.y - 0.5f), 0);
+	int yEnd = std::min((int)ceil(v1.p.y - 0.5f), (int)(Graphics::ScreenHeight)); //exclusive
 
 	for (int y = yStart; y < yEnd; y++) {
 
 
-		const float px0 = m0 * (float(y) + 0.5f - v0.y) + v0.x;
-		const float px1 = m1 * (float(y) + 0.5f - v0.y) + v0.x;
+		const float px0 = m0 * (float(y) + 0.5f - v0.p.y) + v0.p.x;
+		const float px1 = m1 * (float(y) + 0.5f - v0.p.y) + v0.p.x;
 		const int xStart = std::max((int)ceil(px0 - 0.5f), 0);
 		const int xEnd = std::min((int)ceil(px1 - 0.5f), (int)(Graphics::ScreenWidth));
 
@@ -572,105 +548,50 @@ void Graphics::DrawFlatBottomTriangle(const Pointf4& v0, const Pointf4& v1, cons
 
 
 		for (int x = xStart; x < xEnd; x++) {
-	//          v0
-	//         /  \ 
-	//    v'  /    \ v''
-	//       v1----v2
+			//          v0
+			//         /  \ 
+			//    v'  /    \ v''
+			//       v1----v2
 
-			float alpha = (float(y) + 0.5f - v0.y) / (v1.y - v0.y);
-			Pointf4 vPrime = v0 + (v1 - v0) * alpha;
-			Pointf4 vPrimePrime = v0 + (v2 - v0) * alpha;
+			float alpha = (float(y) + 0.5f - v0.p.y) / (v1.p.y - v0.p.y);
 
-			float beta = (float(x) + 0.5f - vPrime.x) / (vPrimePrime.x - vPrime.x);
-			Pointf4 finalPoint = vPrime + (vPrimePrime - vPrime) * beta;
-			float z = finalPoint.w;
-	
+			Vertex vPrime = v0 + (v1 - v0) * alpha;
+			Vertex vPrimePrime = v0 + (v2 - v0) * alpha;
+
+			float beta = (float(x) + 0.5f - vPrime.p.x) / (vPrimePrime.p.x - vPrime.p.x);
+			Vertex finalPoint = vPrime + (vPrimePrime - vPrime) * beta;
 
 
-			if (z > pzBuffer.At(x, y) && z < 0.f) {
+			float recipicalOfz = finalPoint.p.w;
+			float z = 1.f / recipicalOfz;
+
+			if (recipicalOfz > pzBuffer.At(x, y) ) {
 				pzBuffer.Store(x, y, z);
-				PutPixel(x, y, c);
+			
+				PutPixel(x, y, GetColorFromTexture(finalPoint.uvCoordinate * z, *tr.surf));
 			}
 
 		}
 
-		//Colors::Green;//65280
-		//Colors::Red;  //16711680
 	}
-
-
-
-
-
-
 }
-void Graphics::DrawFlatTopTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c)
+
+
+
+Color Graphics::GetColorFromTexture(Vec2 uv, const texture& tex)
 {
-	// v0--------v1
-	//   \      /
-    //    \    /
-	//      v2
 
+	const int w = tex.GetWidth();
+	const int h = tex.GetHeight();
+	const float u = uv.x;
+	const float v = uv.y;
 
-	if (v2.y < 0.f || v1.x < 0.f || v0.y >= float(Graphics::ScreenHeight))return;
+	int x = (int)(w * (u / 1.f));
+	int y = (int)(h * (v / 1.f));
 
-	//run over rise ,avoid vertical fuck up
-	float m0 = (v2.x - v0.x) / (v2.y - v0.y);
-	float m1 = (v2.x - v1.x) / (v2.y - v1.y);
-
-
-	//scanline start and end
-	const int yStart = std::max( (int)ceil(v0.y - 0.5f), 0);
-	const int yEnd   = std::min( (int)ceil(v2.y - 0.5f), (int)(Graphics::ScreenHeight)); //exclusive this last one
-
-	for (int y = yStart; y < yEnd; y++)
-	{
-		const float px0 = m0 * (float(y) + 0.5f - v0.y) + v0.x;
-		const float px1 = m1 * (float(y) + 0.5f - v1.y) + v1.x;
-
-		const int xStart = std::max((int)ceil(px0 - 0.5f),0)               ;
-		const int xEnd   = std::min((int)ceil(px1 - 0.5f), (int)(Graphics::ScreenWidth))               ;//exclusive
-
-		for (int x = xStart; x < xEnd; x++) {
-			PutPixel(x, y, c);
-		}
-	}
+	return tex.GetColor(x, y);
 }
 
-void Graphics::DrawFlatBottomTriangle(const Vec2& v0, const Vec2& v1, const Vec2& v2, Color c)//draw in counterclockwise order 
-{
-	    //          v0
-		//         /  \ 
-		//        /    \
-	    //       v1----v2
 
-
-	if (v2.y < 0.f || v2.x < 0.f || v0.y >= float(Graphics::ScreenHeight)) return;
-
-
-
-	float m0 = (v0.x - v1.x) / (v0.y - v1.y);
-	float m1 = (v0.x - v2.x) / (v0.y - v2.y);
-
-
-
-	int yStart = std::max( (int)ceil(v0.y - 0.5f),0);
-	int yEnd   = std::min( (int)ceil(v1.y - 0.5f), (int)(Graphics::ScreenHeight)); //exclusive
-
-	for (int y = yStart; y < yEnd; y++) {
-
-
-		const float px0 = m0 * (float(y) + 0.5f -v0.y ) + v0.x;
-		const float px1 = m1 * (float(y) + 0.5f -v0.y ) + v0.x;
-
-		const int xStart = std::max((int)ceil(px0 - 0.5f),0);
-		const int xEnd = std::min((int)ceil(px1 - 0.5f)  , (int)(Graphics::ScreenWidth));
-		for (int x = xStart; x < xEnd; x++) {
-			PutPixel(x, y, c);
-		}
-
-
-	}
-}
 
 

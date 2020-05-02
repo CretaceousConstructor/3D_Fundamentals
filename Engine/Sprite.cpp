@@ -1,6 +1,6 @@
 #include "Sprite.h"
 
-Sprite::Sprite(std::string bmpFileName)
+texture::texture(std::string bmpFileName)
 {
 	std::ifstream inFile;
 	inFile.open(bmpFileName, std::ios::in | std::ios::binary);
@@ -194,134 +194,134 @@ Sprite::Sprite(std::string bmpFileName)
 //
 //}
 
-void Sprite::GetDraw(Graphics& GFX, rect rec, Vec2 p)
-{
-
-	//Vei2 locationTopLeft = (Vei2)position;
-	Vei2 locationTopLeft = (Vei2)p;//screen location to draw the spirite
-	int heightOfRect = rec.bottom - rec.top;
-	int widthOfRect = rec.right - rec.left;
-
-
-
-	if (locationTopLeft.y + heightOfRect <= 0 || locationTopLeft.y >= (int)Graphics::ScreenHeight || locationTopLeft.x >= (int)Graphics::ScreenWidth || locationTopLeft.x + widthOfRect <= 0) {
-	}
-	else {
-
-
-		int startOfXinSurface = max(0 - locationTopLeft.x, 0) + rec.left;
-		int endOfXinSurface = min((int)Graphics::ScreenWidth - locationTopLeft.x, widthOfRect);// not include
-
-		int startOfYinSurface = max(0 - locationTopLeft.y, 0) + rec.top;
-		int endOfYinSurface = min((int)Graphics::ScreenHeight - locationTopLeft.y, heightOfRect);  // not include
-
-
-		int startOfXinScreen = max(locationTopLeft.x, 0);
-		int startOfYinScreen = max(locationTopLeft.y, 0);
-		int endOfXinScreen = min((int)Graphics::ScreenWidth, locationTopLeft.x + widthOfRect);   // not include
-		int endOfYinScreen = min((int)Graphics::ScreenHeight, locationTopLeft.y + heightOfRect); // not include;
-
-
-
-		for (int i = startOfYinScreen; i < endOfYinScreen; i++)
-		{
-			for (int j = startOfXinScreen; j < endOfXinScreen; j++)
-			{
-				Color c = bitMap[(startOfYinSurface + (i - startOfYinScreen)) * width + startOfXinSurface + (j - startOfXinScreen)];
-				//* width of the WHOLE BMP
-				if (!(c == Colors::Magenta) && !(c == Colors::Black)) {
-
-
-
-					GFX.PutPixel(j, i, c);
-				}
-			}
-		}
-
-	}
-
-}
-
-
-
-void Sprite::GetDraw(Graphics& GFX, rect rec, Vec2 p, float scaleFactor)
-{
-
-	//Vei2 locationTopLeft = (Vei2)position;
-	//subtracat p from all points
-	//rect is rectangle selected from bitmap to draw to screen
-
-
-	Vei2 locationTopLeft = (Vei2)p;//screen location to draw the spirite
-
-
-	int heightOfRect = rec.bottom - rec.top;
-	int widthOfRect = rec.right - rec.left;
-
-	int heightOfScaled = (int)((float)heightOfRect * scaleFactor + 0.5f);
-	int widthOfScaled = (int)((float)widthOfRect * scaleFactor + 0.5f);
-
-
-	if (locationTopLeft.y + heightOfScaled <= 0 || locationTopLeft.y >= (int)Graphics::ScreenHeight || locationTopLeft.x >= (int)Graphics::ScreenWidth || locationTopLeft.x + widthOfScaled <= 0) {
-
-
-	}
-	else {
-
-
-		int startOfXinScreen = max(locationTopLeft.x, 0);
-		int startOfYinScreen = max(locationTopLeft.y, 0);
-		int endOfXinScreen = min((int)Graphics::ScreenWidth, locationTopLeft.x + widthOfScaled);   // not include
-		int endOfYinScreen = min((int)Graphics::ScreenHeight, locationTopLeft.y + heightOfScaled); // not include;
-
-		for (int i = startOfYinScreen; i < endOfYinScreen; i++) {
-			int _i = (int)((float)(i - locationTopLeft.y) * (1.f / scaleFactor));
-			for (int j = startOfXinScreen; j < endOfXinScreen; j++) {
-				int _j = (int)((float)(j - locationTopLeft.x) * (1.f / scaleFactor));
-				Color c = bitMap[((_i + rec.top) * width) + (rec.left + _j)];
-				if ((c == Colors::Magenta) || (c == Colors::Black)) {
-					continue;
-				}
-				GFX.PutPixel(j, i, c);
-			}
-		}
-	}
-
-}
-
-
-
-void Sprite::GetDrawWithoutClipping(Graphics& GFX, rect rec, Vec2 p, float scaleFactor)
-{
-
-	int heightOfRect = rec.bottom - rec.top;
-	int widthOfRect = rec.right - rec.left;
-
-	for (int i = rec.top; i < rec.bottom; i++) {
-		for (int j = rec.left; j < rec.right; j++) {
-			Color c = bitMap[i * width + j];
-			if (c == Colors::Magenta) {
-				continue;
-			}
-
-			int xOffSetFromOrigin = (j - rec.left);
-			int yOffSetFromOrigin = (i - rec.top);
-			Vec2 position = { (float)xOffSetFromOrigin ,(float)yOffSetFromOrigin };
-
-			Mat2 transmationMatrix = Mat2::Rotation(1.f);
-
-
-			//Mat2 transmationMatrix =  Mat2::Identity() * scaleFactor;
-
-
-
-			position = position * transmationMatrix;
-			position += p;
-			GFX.PutPixel((int)(position.x), (int)(position.y), c);
-
-		}
-	}
-
-
-
-}
+//void texture::GetDraw(Graphics& GFX, rect rec, Vec2 p)
+//{
+//
+//	//Vei2 locationTopLeft = (Vei2)position;
+//	Vei2 locationTopLeft = (Vei2)p;//screen location to draw the spirite
+//	int heightOfRect = rec.bottom - rec.top;
+//	int widthOfRect = rec.right - rec.left;
+//
+//
+//
+//	if (locationTopLeft.y + heightOfRect <= 0 || locationTopLeft.y >= (int)Graphics::ScreenHeight || locationTopLeft.x >= (int)Graphics::ScreenWidth || locationTopLeft.x + widthOfRect <= 0) {
+//	}
+//	else {
+//
+//
+//		int startOfXinSurface = max(0 - locationTopLeft.x, 0) + rec.left;
+//		int endOfXinSurface = min((int)Graphics::ScreenWidth - locationTopLeft.x, widthOfRect);// not include
+//
+//		int startOfYinSurface = max(0 - locationTopLeft.y, 0) + rec.top;
+//		int endOfYinSurface = min((int)Graphics::ScreenHeight - locationTopLeft.y, heightOfRect);  // not include
+//
+//
+//		int startOfXinScreen = max(locationTopLeft.x, 0);
+//		int startOfYinScreen = max(locationTopLeft.y, 0);
+//		int endOfXinScreen = min((int)Graphics::ScreenWidth, locationTopLeft.x + widthOfRect);   // not include
+//		int endOfYinScreen = min((int)Graphics::ScreenHeight, locationTopLeft.y + heightOfRect); // not include;
+//
+//
+//
+//		for (int i = startOfYinScreen; i < endOfYinScreen; i++)
+//		{
+//			for (int j = startOfXinScreen; j < endOfXinScreen; j++)
+//			{
+//				Color c = bitMap[(startOfYinSurface + (i - startOfYinScreen)) * width + startOfXinSurface + (j - startOfXinScreen)];
+//				//* width of the WHOLE BMP
+//				if (!(c == Colors::Magenta) && !(c == Colors::Black)) {
+//
+//
+//
+//					GFX.PutPixel(j, i, c);
+//				}
+//			}
+//		}
+//
+//	}
+//
+//}
+//
+//
+//
+//void texture::GetDraw(Graphics& GFX, rect rec, Vec2 p, float scaleFactor)
+//{
+//
+//	//Vei2 locationTopLeft = (Vei2)position;
+//	//subtracat p from all points
+//	//rect is rectangle selected from bitmap to draw to screen
+//
+//
+//	Vei2 locationTopLeft = (Vei2)p;//screen location to draw the spirite
+//
+//
+//	int heightOfRect = rec.bottom - rec.top;
+//	int widthOfRect = rec.right - rec.left;
+//
+//	int heightOfScaled = (int)((float)heightOfRect * scaleFactor + 0.5f);
+//	int widthOfScaled = (int)((float)widthOfRect * scaleFactor + 0.5f);
+//
+//
+//	if (locationTopLeft.y + heightOfScaled <= 0 || locationTopLeft.y >= (int)Graphics::ScreenHeight || locationTopLeft.x >= (int)Graphics::ScreenWidth || locationTopLeft.x + widthOfScaled <= 0) {
+//
+//
+//	}
+//	else {
+//
+//
+//		int startOfXinScreen = max(locationTopLeft.x, 0);
+//		int startOfYinScreen = max(locationTopLeft.y, 0);
+//		int endOfXinScreen = min((int)Graphics::ScreenWidth, locationTopLeft.x + widthOfScaled);   // not include
+//		int endOfYinScreen = min((int)Graphics::ScreenHeight, locationTopLeft.y + heightOfScaled); // not include;
+//
+//		for (int i = startOfYinScreen; i < endOfYinScreen; i++) {
+//			int _i = (int)((float)(i - locationTopLeft.y) * (1.f / scaleFactor));
+//			for (int j = startOfXinScreen; j < endOfXinScreen; j++) {
+//				int _j = (int)((float)(j - locationTopLeft.x) * (1.f / scaleFactor));
+//				Color c = bitMap[((_i + rec.top) * width) + (rec.left + _j)];
+//				if ((c == Colors::Magenta) || (c == Colors::Black)) {
+//					continue;
+//				}
+//				GFX.PutPixel(j, i, c);
+//			}
+//		}
+//	}
+//
+//}
+//
+//
+//
+//void texture::GetDrawWithoutClipping(Graphics& GFX, rect rec, Vec2 p, float scaleFactor)
+//{
+//
+//	int heightOfRect = rec.bottom - rec.top;
+//	int widthOfRect = rec.right - rec.left;
+//
+//	for (int i = rec.top; i < rec.bottom; i++) {
+//		for (int j = rec.left; j < rec.right; j++) {
+//			Color c = bitMap[i * width + j];
+//			if (c == Colors::Magenta) {
+//				continue;
+//			}
+//
+//			int xOffSetFromOrigin = (j - rec.left);
+//			int yOffSetFromOrigin = (i - rec.top);
+//			Vec2 position = { (float)xOffSetFromOrigin ,(float)yOffSetFromOrigin };
+//
+//			Mat2 transmationMatrix = Mat2::Rotation(1.f);
+//
+//
+//			//Mat2 transmationMatrix =  Mat2::Identity() * scaleFactor;
+//
+//
+//
+//			position = position * transmationMatrix;
+//			position += p;
+//			GFX.PutPixel((int)(position.x), (int)(position.y), c);
+//
+//		}
+//	}
+//
+//
+//
+//}

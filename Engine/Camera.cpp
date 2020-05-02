@@ -15,6 +15,7 @@ Camera::Camera(Pointf4 wl, Vec4 la, Vec4 lu)
 	ScaleMa.elements[1][1] = 2.f / (Spectrum::t - Spectrum::b);
 	ScaleMa.elements[2][2] = 2.f / (Spectrum::n - Spectrum::f);
 
+
 	TransMa = Mat4::Translation((Spectrum::r + Spectrum::l) / -2.f, (Spectrum::t + Spectrum::b) / -2.f, (Spectrum::n + Spectrum::f) / -2.f);
 
 

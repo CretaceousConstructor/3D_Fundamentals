@@ -15,7 +15,7 @@ Character::Character(std::string Bmp, int _actionAccount, int _columnsOfAction, 
 			int bottom;
 		};
 	*/
-	chara = std::vector<Sprite::rect>(_actionAccount * _columnsOfAction);
+	chara = std::vector<texture::rect>(_actionAccount * _columnsOfAction);
 	int width = sp.GetWidth();
 	int height = sp.GetHeight();
 
@@ -24,7 +24,7 @@ Character::Character(std::string Bmp, int _actionAccount, int _columnsOfAction, 
 		int l = (i % _columnsOfAction) * (width / _columnsOfAction);
 		int r = l + width / _columnsOfAction; //not include 
 		int b = t + height / _actionAccount; // not include
-		chara[i] = Sprite::rect{ t,l,r,b };
+		chara[i] = texture::rect{ t,l,r,b };
 	}
 
 	itr = chara.begin();
@@ -52,13 +52,13 @@ void Character::update(float dt)
 void Character::GetDraw(Graphics& GFX)
 {
 
-	sp.GetDraw(GFX, *itr, position);
+	//sp.GetDraw(GFX, *itr, position);
 }
 
 void Character::GetDraw(Graphics& GFX, float scaleFactor)
 {
 
-	sp.GetDrawWithoutClipping(GFX, *itr, position, scaleFactor);
+	//sp.GetDrawWithoutClipping(GFX, *itr, position, scaleFactor);
 
 }
 

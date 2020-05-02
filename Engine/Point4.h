@@ -7,7 +7,6 @@ template <typename T>
 class _Point4 {
 public:
 	_Point4() : w(T(1.0)) {
-
 	};//default constructor
 	_Point4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w)
 	{}
@@ -24,6 +23,7 @@ public:
 		w = rhs.w;
 		return	*this;
 	}
+
 	_Point4 operator+(const _Point4& rhs)const
 	{
 		_Point4 result;
@@ -55,6 +55,19 @@ public:
 		result.w = w * rhs;
 		return	result;
 	}
+	_Point4& operator*=(T rhs) 
+	{
+
+		x *= rhs;
+		y *= rhs;
+		z *= rhs;
+		w *= rhs;
+		return	*this;
+	}
+
+
+
+
 	_Point4 operator/(T rhs) const
 	{
 		_Point4 result;
@@ -84,8 +97,32 @@ public:
 		x += rhs.x;
 		y += rhs.y;
 		z += rhs.z;
+
 		return *this;
 	}
+
+	_Point4& operator+=(const _Point4& rhs)
+	{
+
+		x += rhs.x;
+		y += rhs.y;
+		z += rhs.z;
+		w += rhs.w;
+		return *this;
+	}
+
+	_Point4& operator-=(const _Point4& rhs)
+	{
+
+		x -= rhs.x;
+		y -= rhs.y;
+		z -= rhs.z;
+		w -= rhs.w;
+		return *this;
+	}
+
+
+
 
 
 

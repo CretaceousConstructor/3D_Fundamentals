@@ -24,6 +24,7 @@
 #include "Graphics.h"
 #include "Vec2.h"
 #include "ChiliMath.h"
+
 #include "Snow.h"
 #include "Triangle.h"
 #include "Character.h"
@@ -53,22 +54,11 @@ private:
 	/********************************/
 	/*  User Variables              */
 	Timer clock;
-
-	Triangle trWorld0;
+	texture texture1;
 	Triangle trWorld1;
-
-	Triangle trView0;
-	Triangle trView1;
-
-	
-	Triangle trNDC0;
+	Triangle trPiplined;
 	Triangle trNDC1;
-
-
-	Triangle trCubnoid0;
 	Triangle trCubnoid1;
-
-
 	bool draw = true;
 	Camera camera;
 	NDCScreenTransformer NSTmer = { (int)Graphics::ScreenWidth, (int)Graphics::ScreenHeight };
