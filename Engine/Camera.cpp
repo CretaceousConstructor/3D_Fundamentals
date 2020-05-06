@@ -9,19 +9,6 @@ Camera::Camera(Pointf4 wl, Vec4 la, Vec4 lu)
 	lookUp(lu)
 {
 
-	//(cubnoid space)orthographicSpce -> (NDC space [-1,1]^3)
-	ScaleMa = Mat4::Identity();
-	ScaleMa.elements[0][0] = 2.f / (Spectrum::r - Spectrum::l);
-	ScaleMa.elements[1][1] = 2.f / (Spectrum::t - Spectrum::b);
-	ScaleMa.elements[2][2] = 2.f / (Spectrum::n - Spectrum::f);
-
-
-	TransMa = Mat4::Translation((Spectrum::r + Spectrum::l) / -2.f, (Spectrum::t + Spectrum::b) / -2.f, (Spectrum::n + Spectrum::f) / -2.f);
-
-
-	orthographicPro = ScaleMa * TransMa;
-
-
 	//worldSpace -> cameraSpace
 	lookAt.Normalize();
 	lookUp.Normalize();
@@ -34,25 +21,6 @@ Camera::Camera(Pointf4 wl, Vec4 la, Vec4 lu)
 		 0.f       ,  0.f     ,  0.f       ,1.f
 	};
 	cameraTransformation = viewRotation * viewTranslation;
-
-
-
-
-
-
-	Mat4 perspectiveToOrtho = {
-
-		 Spectrum::n  ,   0.f        ,              0.f  ,  0.f,
-		 0.f          ,  Spectrum::n ,              0.f  ,  0.f,
-		 0.f          ,   0.f        ,     Spectrum::n+Spectrum::f,-Spectrum::n * Spectrum::f,
-		 0.f          ,   0.f        ,              1.f  ,  0.f
-	};
-	perspectiveProjection = perspectiveToOrtho;
-
-
-
-
-
 
 }
 

@@ -150,12 +150,15 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GDIPlusManager.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="IndexList.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Pangle.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Mat2.h" />
     <ClInclude Include="Mat4.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="NDCScreenTransformer.h" />
+    <ClInclude Include="Pipline.h" />
     <ClInclude Include="Point4.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
@@ -184,6 +187,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="NDCScreenTransformer.cpp" />
+    <ClCompile Include="Pipline.cpp" />
     <ClCompile Include="Snow.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Surface.cpp" />

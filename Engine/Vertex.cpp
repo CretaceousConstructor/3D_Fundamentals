@@ -14,7 +14,7 @@ Vertex::Vertex(const Vertex& rhs)
 }
 
 
-Vertex Vertex::operator+(const Vertex& rhs)
+Vertex Vertex::operator+(const Vertex& rhs) const
 {
 	return Vertex(*this) += rhs;
 }
@@ -30,7 +30,7 @@ Vertex& Vertex::operator+=(const Vertex& rhs)
 
 
 
-Vertex Vertex::operator-(const Vertex& rhs)
+Vertex Vertex::operator-(const Vertex& rhs) const
 {
 	return Vertex(*this) -= rhs;
 }
@@ -43,7 +43,7 @@ Vertex& Vertex::operator-=(const Vertex& rhs)
 }
 
 
-Vertex Vertex::operator*(const float rhs)
+Vertex Vertex::operator*(const float rhs) const
 {
 	return Vertex(*this) *= rhs;
 }
@@ -53,6 +53,13 @@ Vertex& Vertex::operator*=(const float rhs)
 	p *= rhs;
 
 	uvCoordinate *= rhs;
+	return *this;
+}
+
+Vertex& Vertex::operator=(const Vertex& rhs)
+{
+	p = rhs.p;
+	uvCoordinate = rhs.uvCoordinate;
 	return *this;
 }
 

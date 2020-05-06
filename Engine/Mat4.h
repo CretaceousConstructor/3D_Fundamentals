@@ -36,7 +36,7 @@ public:
 			for (size_t k = 0; k < 4; k++)
 			{
 				T sum = (T)0.0;
-				for (size_t i = 0; i < 4 ;i++)
+				for (size_t i = 0; i < 4; i++)
 				{
 					sum += rhs.elements[i][k] * elements[j][i];
 				}
@@ -93,7 +93,7 @@ public:
 		return r;
 	}
 
-	static _Mat4 RotationAroundAxisZ(T theta )
+	static _Mat4 RotationAroundAxisZ(T theta)
 	{
 		const T cosTheta = (T)cos(theta);
 		const T sinTheta = (T)sin(theta);
@@ -119,6 +119,12 @@ public:
 		};
 		return r;
 	}
+
+
+
+
+
+
 
 
 public:
@@ -154,14 +160,11 @@ namespace Mat {
 
 		_Vec4<T> vRot = v * cosTheta + (_Vec4<T>::dot(k, v)) * sinTheta + k * (k * v) * ((T)1.0 - cosTheta);
 
-
-
 		return { vRot.x,vRot.y,vRot.z,(T)1.0 };
 
 	}
 
 }
-	
 
 
 
@@ -170,59 +173,52 @@ namespace Mat {
 
 
 
+template<typename T>
+_Point4<T> operator*(const _Mat4<T>& lhs, const _Point4<T>& rhs)
+{
+	return
+	{
+		rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2] + rhs.w * lhs.elements[0][3],
+		rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2] + rhs.w * lhs.elements[1][3],
+		rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2] + rhs.w * lhs.elements[2][3],
+		rhs.x * lhs.elements[3][0] + rhs.y * lhs.elements[3][1] + rhs.z * lhs.elements[3][2] + rhs.w * lhs.elements[3][3],
+
+	};
+}
 
 
 
-		//template<typename T>
-		//_Vec4<T> operator*(const _Mat4<T>& lhs, const _Vec4<T>& rhs)
-		//{
-		//	return
-		//	{
-		//		rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2],
-		//		rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2],
-		//		rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2],
-		//		(T)0.0
-		//	};
-		//}
+template<typename T>
+_Point4<T>& operator*=(const _Mat4<T>& lhs, _Point4<T>& rhs)
+{
+	T rhsX = rhs.x;
+	T rhsY = rhs.y;
+	T rhsZ = rhs.z;
+	T rhsW = rhs.w;
 
 
-		template<typename T>
-		_Point4<T>& operator*=(_Mat4<T>& lhs, const _Point4<T>& rhs)
-		{
-			return lhs = rhs * lhs;
-		}
+	rhs.x = rhsX * lhs.elements[0][0] + rhsY * lhs.elements[0][1] + rhsZ * lhs.elements[0][2] + rhsW * lhs.elements[0][3];
+	rhs.y = rhsX * lhs.elements[1][0] + rhsY * lhs.elements[1][1] + rhsZ * lhs.elements[1][2] + rhsW * lhs.elements[1][3];
+	rhs.z = rhsX * lhs.elements[2][0] + rhsY * lhs.elements[2][1] + rhsZ * lhs.elements[2][2] + rhsW * lhs.elements[2][3];
+	rhs.w = rhsX * lhs.elements[3][0] + rhsY * lhs.elements[3][1] + rhsZ * lhs.elements[3][2] + rhsW * lhs.elements[3][3];
+	return rhs;
+}
 
 
 
-		template<typename T>
-		_Point4<T> operator*(const _Mat4<T>& lhs, const _Point4<T>& rhs)
-		{
-			return
-			{
-				rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2] + rhs.w * lhs.elements[0][3],
-				rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2] + rhs.w * lhs.elements[1][3],
-				rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2] + rhs.w * lhs.elements[2][3],
-				rhs.x * lhs.elements[3][0] + rhs.y * lhs.elements[3][1] + rhs.z * lhs.elements[3][2] + rhs.w * lhs.elements[3][3],
-				
-			};
-		}
 
 
-		template<typename T>
-		_Point4<T> wPreserveMultiplication(const _Mat4<T>& lhs, const _Point4<T>& rhs)
-		{
-			return
-			{
-				rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2] + (T)1.0 * lhs.elements[0][3],
-				rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2] + (T)1.0 * lhs.elements[1][3],
-				rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2] + (T)1.0 * lhs.elements[2][3],
-				rhs.w,
-
-			};
-		}
-
-
-
+template<typename T>
+_Vec4<T> operator*(const _Mat4<T>& lhs, const _Vec4<T>& rhs)
+{
+	return
+	{
+		rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2],
+		rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2],
+		rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2],
+		(T)0.0
+	};
+}
 
 
 

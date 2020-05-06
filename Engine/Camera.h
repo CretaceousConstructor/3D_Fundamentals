@@ -20,8 +20,8 @@ public:
 	void mover();
 	void movef();
 	void moveb();
-	Mat4 orthographicPro;
 	Mat4 cameraTransformation;
+	Mat4 orthographicPro;
 	Mat4 perspectiveProjection;
 	Mat4 ScaleMa;
 	Mat4 TransMa;

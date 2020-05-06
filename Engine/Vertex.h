@@ -8,12 +8,13 @@ public:
 	Vertex() = default;
 	Vertex(Pointf4 a, Vec2 uv);
 	Vertex(const Vertex& rhs);
-	Vertex operator+(const Vertex& rhs);
+	Vertex operator+(const Vertex& rhs) const;
 	Vertex& operator+= (const Vertex& rhs);
-	Vertex Vertex::operator-(const Vertex& rhs);
+	Vertex Vertex::operator-(const Vertex& rhs)const;
 	Vertex& Vertex::operator-=(const Vertex& rhs);
-	Vertex operator* (const float rhs);
+	Vertex operator* (const float rhs) const;
 	Vertex& operator*= (const float rhs);
+	Vertex& operator= (const Vertex& rhs);
 
 
 	Pointf4 p;

@@ -33,7 +33,8 @@
 #include "Cubnoid.h"
 #include "Mat4.h"
 #include "Camera.h"
-
+#include "Pipline.h"
+#include "Cube.h"
 class Game
 {
 public:
@@ -54,14 +55,11 @@ private:
 	/********************************/
 	/*  User Variables              */
 	Timer clock;
-	texture texture1;
+
 	Triangle trWorld1;
 	Triangle trPiplined;
-	Triangle trNDC1;
-	Triangle trCubnoid1;
-	bool draw = true;
-	Camera camera;
-	NDCScreenTransformer NSTmer = { (int)Graphics::ScreenWidth, (int)Graphics::ScreenHeight };
+	Cube cube;
+	Pipline pip;
 	/********************************/
 };
 
