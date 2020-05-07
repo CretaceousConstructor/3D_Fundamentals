@@ -41,10 +41,5 @@ public:
 	Graphics& gfx;
 	std::unique_ptr<texture> tx;
 
-
-
-
-	
-
 };
 

@@ -302,11 +302,12 @@ Color Pipline::GetColorFromTexture(Vec2 uv, const texture& tex)
 	int x = (int)(w * fmod(u, 1.f));
 	int y = (int)(h * fmod(v, 1.f));
 	
-	if (x >= w || x < 0 || y > h || y < 0) {
 
-		return Colors::White;
+	/*if (x >= w || x < 0 || y >= h || y < 0) {
+
+  		return Colors::White;
 		
-	}
+	}*/
 	return tex.GetColor(x, y);
 
 }

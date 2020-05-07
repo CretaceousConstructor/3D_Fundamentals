@@ -42,14 +42,23 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+
 	const float dt = clock.Mark();
+	pipUpdate();
+	cube.update(wnd.kbd);
+	pip.SeparateIndexesListAndVertex(cube.IndicesList, cube.VertexList);
+
+
+}
+
+void Game::pipUpdate()
+{
 	if (wnd.kbd.KeyIsPressed('B')) {
 		pip.camera.moveu();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
 		pip.camera.moved();
 	}
-
 	if (wnd.kbd.KeyIsPressed('A')) {
 		pip.camera.movel();
 	}
@@ -74,17 +83,9 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_UP)) {
 		pip.camera.RotateVerticallyU();
 	}
-
-	pip.SeparateIndexesListAndVertex(Cube::GetIndicesList(), Cube::GetVertexList());
-
-
 }
 
 void Game::ComposeFrame()
 {
-
-	
 }
-
-
 

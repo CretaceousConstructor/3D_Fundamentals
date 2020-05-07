@@ -46,6 +46,7 @@ public:
 private:
 	void ComposeFrame();
 	void UpdateModel();
+	void pipUpdate();
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -55,11 +56,9 @@ private:
 	/********************************/
 	/*  User Variables              */
 	Timer clock;
-
-	Triangle trWorld1;
-	Triangle trPiplined;
-	Cube cube;
 	Pipline pip;
+	Cube cube;
+
 	/********************************/
 };
 

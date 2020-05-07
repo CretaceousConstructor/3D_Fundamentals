@@ -14,7 +14,7 @@ class texture
 {
 public:
 	class rect;
-	
+
 	texture() = default;
 
 	texture(std::string bmpFileName);
@@ -32,7 +32,7 @@ public:
 
 	Color GetColor(int x, int y)const {
 
-		return bitMap[(height-y )* width + x];
+		return bitMap[(height - y - 1) * width + x];
 
 	}
 
@@ -49,7 +49,7 @@ public:
 		int right;
 		int bottom;
 	};
-	
+
 
 private:
 
