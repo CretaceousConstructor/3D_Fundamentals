@@ -1,9 +1,7 @@
-#include "Cube.h"
+#include "ColorCube.h"
 
-void Cube::update(Keyboard& kbd)
+void ColorCube::update(float dt)
 {
-
-
 	Mat4 temp = {
 
 		1.f,       0.f,                         0.f,                   0.f,
@@ -14,8 +12,8 @@ void Cube::update(Keyboard& kbd)
 	};
 	RotationMat = {
 		1.f,       0.f,                         0.f,                  0.f,
-		0.f,     cos(rotateSpeedInRadius),-sin(rotateSpeedInRadius),  0.f,
-		0.f,     sin(rotateSpeedInRadius), cos(rotateSpeedInRadius),  0.f,
+		0.f,     cos(dt * rotateSpeedInRadius),-sin(dt * rotateSpeedInRadius),  0.f,
+		0.f,     sin(dt * rotateSpeedInRadius), cos(dt * rotateSpeedInRadius),  0.f,
 		0.f,       0.f,                       0.f  ,                  1.f
 	};
 
@@ -26,9 +24,10 @@ void Cube::update(Keyboard& kbd)
 		0.f,       0.f,                         0.f  ,                  1.f
 	};
 	for (auto& Vertex : VertexList) {
-
 		temp *= Vertex.p;
 		RotationMat *= Vertex.p;
 		TranslationMat *= Vertex.p;
 	}
+
+
 }

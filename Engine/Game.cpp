@@ -45,10 +45,19 @@ void Game::UpdateModel()
 
 	const float dt = clock.Mark();
 	pipUpdate();
-	cube.update(wnd.kbd);
-	pip.SeparateIndexesListAndVertex(cube.IndicesList, cube.VertexList);
+	Ccube.update(dt);
+	Tcube.update(dt);
+
+	pip.SeparateIndexesListAndVertex(Ccube.IndicesList, Ccube.VertexList);
+	pip.SeparateIndexesListAndVertex(Tcube.IndicesList, Tcube.VertexList);
 
 
+}
+
+
+
+void Game::ComposeFrame()
+{
 }
 
 void Game::pipUpdate()
@@ -84,8 +93,3 @@ void Game::pipUpdate()
 		pip.camera.RotateVerticallyU();
 	}
 }
-
-void Game::ComposeFrame()
-{
-}
-

@@ -20,11 +20,11 @@ void Zbuffer::Clear()
 	const int nDepths = h * w;
 	
 	for (int i = 0; i < nDepths; ++i) {
-		zBuffer[i] = std::numeric_limits<float>::lowest();
+		zBuffer[i] = std::numeric_limits<float>::max();
 	}
 
 
-	}
+}
 void Zbuffer::Store(int x, int y, float z)
 {
 	zBuffer[(y * w + x)] = z;

@@ -19,28 +19,19 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
-
-#include <vector>
 #include "Graphics.h"
-#include "Vec2.h"
-#include "ChiliMath.h"
-
-#include "Snow.h"
-#include "Triangle.h"
-#include "Character.h"
 #include "Timer.h"
-#include "NDCScreenTransformer.h"
-#include "Cubnoid.h"
-#include "Mat4.h"
-#include "Camera.h"
 #include "Pipline.h"
-#include "Cube.h"
+#include "ColorCube.h"
+#include "TextureCube.h"
+
+
 class Game
 {
 public:
-	Game( class MainWindow& wnd );
-	Game( const Game& ) = delete;
-	Game& operator=( const Game& ) = delete;
+	Game(class MainWindow& wnd);
+	Game(const Game&) = delete;
+	Game& operator=(const Game&) = delete;
 	//~Game() = default;
 	void Go();
 private:
@@ -57,7 +48,8 @@ private:
 	/*  User Variables              */
 	Timer clock;
 	Pipline pip;
-	Cube cube;
+	ColorCube Ccube;
+	TextureCube Tcube;
 
 	/********************************/
 };

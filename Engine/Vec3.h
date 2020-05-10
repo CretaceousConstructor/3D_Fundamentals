@@ -1,6 +1,7 @@
 #pragma once
 #include "ChiliMath.h"
 #include "Vec2.h"
+#include "Colors.h"
 template <typename T>
 
 class _Vec3 : public _Vec2<T> {
@@ -117,6 +118,11 @@ public:
 	bool	operator!=(const _Vec3& rhs) const
 	{
 		return !(*this == rhs);
+	}
+
+	explicit operator Color()  const
+	{
+		return Color{ (unsigned char)x,(unsigned char)y,(unsigned char)z };
 	}
 
 

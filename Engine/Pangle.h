@@ -3,7 +3,7 @@
 #include "Sprite.h"
 
 template <typename V>
-class _Pangle {
+class _Triangle {
 
 public:
 	V v0;

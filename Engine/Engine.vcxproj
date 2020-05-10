@@ -139,6 +139,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColorCube.h" />
+    <ClInclude Include="ColorEffect.h" />
+    <ClInclude Include="ColorPixelShader.h" />
+    <ClInclude Include="ColorVertex.h" />
     <ClInclude Include="Cubnoid.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ChiliException.h" />
@@ -162,12 +166,15 @@
     <ClInclude Include="Point4.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="TextureCube.h" />
+    <ClInclude Include="TexturePixelShader.h" />
     <ClInclude Include="Snow.h" />
     <ClInclude Include="Spectrum.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Surface.h" />
+    <ClInclude Include="TextureEffect.h" />
+    <ClInclude Include="TextureVertex.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
     <ClInclude Include="Vec4.h" />
@@ -177,7 +184,8 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Character.cpp" />
-    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="ColorCube.cpp" />
+    <ClCompile Include="ColorVertex.cpp" />
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GDIPlusManager.cpp" />
@@ -191,8 +199,9 @@
     <ClCompile Include="Snow.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Surface.cpp" />
+    <ClCompile Include="TextureCube.cpp" />
+    <ClCompile Include="TextureVertex.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Zbuffer.cpp" />
   </ItemGroup>

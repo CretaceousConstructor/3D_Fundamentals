@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Point4.h"
-#include "Vertex.h"
+
+
 class NDCScreenTransformer
 {
 public:
@@ -10,7 +11,8 @@ public:
 		xFactor( float(w) / 2.f),
 		yFactor( float(h) / 2.f)
 	{}
-	Vertex& Transform(Vertex& v) {
+	template <typename Vertex>
+	inline Vertex& Transform(Vertex& v) {
 		float tempZricapical = 1.f / v.p.w;
 		v *= tempZricapical;
 		v.p.w = tempZricapical;
@@ -18,8 +20,8 @@ public:
 		v.p.y = (-v.p.y + 1.f) * yFactor;
 		return v;
 	}
-
-	Vertex GetTransform(const Vertex& v) {
+	template <typename Vertex>
+	inline Vertex GetTransform(const Vertex& v) {
 		return Transform(Vertex(v));
 	}
 
