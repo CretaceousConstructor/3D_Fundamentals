@@ -67,4 +67,19 @@ TextureVertex& TextureVertex::operator=(const TextureVertex& rhs)
 	return *this;
 }
 
+TextureVertex TextureVertex::operator/(const float rhs) const
+{
+
+
+	return TextureVertex(*this) /= rhs;
+}
+
+TextureVertex& TextureVertex::operator/=(const float rhs)
+{
+	p *= rhs;
+	uvCoordinate *= rhs;
+	return *this;
+
+}
+
 

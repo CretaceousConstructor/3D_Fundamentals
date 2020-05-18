@@ -44,13 +44,17 @@ void Game::UpdateModel()
 {
 
 	const float dt = clock.Mark();
-	pipUpdate();
+	pipUpdate(dt);
 	Ccube.update(dt);
 	Tcube.update(dt);
+	Ncube.update(dt);
 
-	pip.SeparateIndexesListAndVertex(Ccube.IndicesList, Ccube.VertexList);
-	pip.SeparateIndexesListAndVertex(Tcube.IndicesList, Tcube.VertexList);
+	//pip.SeparateIndexesListAndVertex(Ccube.IndicesList, Ccube.VertexList);
+	//pip.SeparateIndexesListAndVertex(Tcube.IndicesList, Tcube.VertexList);
 
+	//pip.SeparateIndexesListAndVertex(WaveyPlane::GetTextureIndicesList(), WaveyPlane::GetTextureVertexList(0.5f));
+
+	pip.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList, ShaderChoser{0,1,2});
 
 }
 
@@ -60,7 +64,7 @@ void Game::ComposeFrame()
 {
 }
 
-void Game::pipUpdate()
+void Game::pipUpdate(float dt)
 {
 	if (wnd.kbd.KeyIsPressed('B')) {
 		pip.camera.moveu();
@@ -92,4 +96,9 @@ void Game::pipUpdate()
 	if (wnd.kbd.KeyIsPressed(VK_UP)) {
 		pip.camera.RotateVerticallyU();
 	}
+
+	pip.TextureEffect.vs.SetTime(dt);
+
+
+
 }

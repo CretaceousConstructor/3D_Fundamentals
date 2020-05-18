@@ -7,43 +7,50 @@
 #include "IndexList.h"
 #include "Mat4.h"
 #include "Spectrum.h"
-#include "Pangle.h"
+#include "Triangle.h"
 #include "ChiliMath.h"
 #include "Camera.h"
 #include "Zbuffer.h"
 
-
+#include "TextureEffect.h"
+#include "ColorEffect.h"
 
 #include "TextureVertex.h"
-#include "TextureEffect.h"
-#include "TexturePixelShader.h"
-
 #include "ColorVertex.h"
-#include "ColorEffect.h"
+#include "SolidVertex.h"
+
+#include "TexturePixelShader.h"
 #include "ColorPixelShader.h"
 
+#include "WaveyVertexShader.h"
+#include "NormalVertexShader.h"
 
+#include "SolidGeometryShader.h"
+
+
+#include "ShaderChoser.h"
 class Pipline
 {
 public:
 	Pipline() = delete;
 	Pipline(Graphics& GFX);
 	template <typename Vertex>
-	void SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes);
+	void SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes, ShaderChoser choser);
 	template <typename Vertex>
-	void GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes);
+	void GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes, ShaderChoser choser);
 	template <typename Vertex>
-	void AssembleTriangle(const std::vector<Indexes> IndexesList, const std::vector<Vertex>& vertexes);
+	void AssembleTriangle(const std::vector<Indexes> IndexesList, const std::vector<Vertex>& vertexes ,ShaderChoser choser);
 	template <typename Vertex>
-	void ProcessTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);
+	void ProcessTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2,int i, ShaderChoser choser);
 	template <typename Vertex>
-	void PostProcessTriangle(_Triangle<Vertex> triangle);
+	void PostProcessTriangle(_Triangle<Vertex> triangle, ShaderChoser choser);
 	template <typename Vertex>
-	void DrawTriangle(const _Triangle<Vertex>& tr);
+	void DrawTriangle(const _Triangle<Vertex>& tr, ShaderChoser choser);
 	template <typename Vertex>
-	void DrawFlatTopTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);//draw in clockwise order 
+	void DrawFlatTopTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2, ShaderChoser choser);//draw in clockwise order 
 	template <typename Vertex>
-	void DrawFlatBottomTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);//draw in counterclockwise order 
+	void DrawFlatBottomTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2, ShaderChoser choser);//draw in counterclockwise order 
+
 	template <typename Vertex>
 	Color GetColor(Vertex v) {
 		return Colors::White;
@@ -58,11 +65,34 @@ public:
 	}
 
 	template <typename Vertex>
-	Vertex TransformVertex(Vertex) {
+	auto GetVertex(const Vertex& v) {
+		return v;
+	}
 
+	template <>
+	auto GetVertex(const ColorVertex& v) {
+		return ColorEffect.vs(v);
+	}
+
+	template <>
+	auto GetVertex(const TextureVertex& v) {
+		return TextureEffect.vs(v);
 	}
 
 
+
+	template <typename Vertex>
+	auto GetTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2,int num) {
+
+		return _Triangle<Vertex>{v0, v1, v2};
+	}
+
+
+	template <>
+	auto GetTriangle(const SolidVertex& v0, const SolidVertex& v1, const SolidVertex& v2, int num) 
+	{
+		return ColorEffect.gs(v0, v1, v2,num);
+	}
 
 
 	Mat4 orthographicPro;
@@ -74,23 +104,29 @@ public:
 	Graphics& gfx;
 
 
+	TextureEffect<TexturePixelShader,WaveyVertexShader, SolidGeometryShader> TextureEffect;
+	ColorEffect<ColorPixelShader,NormalVertexShader, SolidGeometryShader> ColorEffect;
 
-	TextureEffect<TextureVertex, TexturePixelShader> TextureEffect;
-	ColorEffect<ColorVertex, ColorPixelShader> ColorEffect;
+	//TexturePixelShader	texPs;
+	ColorPixelShader	colorPs;  
+	WaveyVertexShader	waveyVs;  
+	NormalVertexShader	normalVs; 
+	SolidGeometryShader	solidGs;  
+
+
 
 
 
 };
 
 template<typename Vertex>
-inline void Pipline::SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes)
+inline void Pipline::SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes, ShaderChoser choser)
 {
 	GoThroughVertexTransformation(IndexesList, vertexes);
-
 }
 
 template<typename Vertex>
-inline void Pipline::GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes)
+inline void Pipline::GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes,ShaderChoser choser)
 {
 
 	std::vector<Vertex> verticesOut;
@@ -99,32 +135,43 @@ inline void Pipline::GoThroughVertexTransformation(const std::vector<Indexes>& I
 	for (auto& v : verticesOut) {
 		camera.cameraTransformation *= v.p;
 	}
+
+
+
+
+
 	AssembleTriangle(IndexesList, verticesOut);
 }
 
 template<typename Vertex>
 inline void Pipline::AssembleTriangle(const std::vector<Indexes> IndexesList, const std::vector<Vertex>& vertexes)
 {
-
+	int i = 0;
 	for (auto& indexes : IndexesList) {
 		const auto& v0 = vertexes[indexes[0]];
 		const auto& v1 = vertexes[indexes[1]];
 		const auto& v2 = vertexes[indexes[2]];
-		if ((Vec4::dot((v1.p - v0.p), (v2.p - v0.p)) * Vec4(v0.p)) < 0.f) {
-			ProcessTriangle(v0, v1, v2);
+		if ((Vec4::dot((v1.p - v0.p), (v2.p - v0.p)) * Vec4(v0.p)) < 0.f) {// do backface culling in world space or viewspace or you fucked up
+			ProcessTriangle(GetVertex(v0), GetVertex(v1), GetVertex(v2),i);
 		}
-
-
+		i++;
 	}
 }
 
+
+
+
+
+
+
+
 template<typename Vertex>
-inline void Pipline::ProcessTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
+inline void Pipline::ProcessTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2,int i)
 {
 
 
 
-	PostProcessTriangle(_Triangle<Vertex>{v0, v1, v2});
+	PostProcessTriangle( GetTriangle(v0, v1, v2, i) );
 
 
 }
@@ -275,8 +322,6 @@ inline void Pipline::DrawFlatTopTriangle(const Vertex& v0, const Vertex& v1, con
 				gfx.PutPixel(x, y, GetColor(finalPoint * z));
 			}
 		}
-
-
 	}
 
 

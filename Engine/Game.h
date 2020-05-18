@@ -24,8 +24,9 @@
 #include "Pipline.h"
 #include "ColorCube.h"
 #include "TextureCube.h"
-
-
+#include "WaveyPlane.h"
+#include "SolidCube.h"
+#include "ShaderChoser.h"
 class Game
 {
 public:
@@ -37,7 +38,7 @@ public:
 private:
 	void ComposeFrame();
 	void UpdateModel();
-	void pipUpdate();
+	void pipUpdate(float dt);
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -50,7 +51,7 @@ private:
 	Pipline pip;
 	ColorCube Ccube;
 	TextureCube Tcube;
-
+	SolidCube Ncube;
 	/********************************/
 };
 

@@ -18,13 +18,14 @@ public:
 		const int h = tex->GetHeight();
 		const float u = in.uvCoordinate.x; // u
 		const float v = in.uvCoordinate.y; // v
-	
+		
 		int x = (int)(w * fmod(u, 1.f));
 		int y = (int)(h * fmod(v, 1.f));
 		if (x >= w || x < 0 || y >= h || y < 0) {
 			return Colors::White;
 		}
 		return tex->GetColor(x, y);
+	
 	}
 private:
 	std::unique_ptr<texture> tex;

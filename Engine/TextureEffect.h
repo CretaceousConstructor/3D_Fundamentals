@@ -10,7 +10,7 @@
 
 //<TextureVertex, TexturePixelShader> 
 
-template <typename T, typename S>
+template <typename P,typename V,typename G>
 class TextureEffect  {
 public:
 	TextureEffect() = delete;
@@ -18,10 +18,9 @@ public:
 		ps(s)
 	{
 	}
-
-
-
-	S ps;
+	P ps;
+	V vs;
+	G gs;
 };
 
 

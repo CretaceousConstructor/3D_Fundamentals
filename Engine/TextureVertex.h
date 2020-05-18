@@ -15,6 +15,11 @@ class TextureVertex {
 		TextureVertex& operator*= (const float rhs);
 		TextureVertex& operator= (const TextureVertex& rhs);
 
+
+		TextureVertex  operator/ (const float rhs) const;
+		TextureVertex& operator/= (const float rhs);
+
+
 		Pointf4 p;
 		Vec2 uvCoordinate;
 };

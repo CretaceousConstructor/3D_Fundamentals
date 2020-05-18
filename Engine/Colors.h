@@ -20,6 +20,7 @@
 ******************************************************************************************/
 #pragma once
 
+
 class Color
 {
 public:
@@ -99,6 +100,12 @@ public:
 	{
 		dword = (dword & 0xFFFFFF00u) | b;
 	}
+
+
+
+
+	
+
 };
 
 namespace Colors
@@ -117,4 +124,4 @@ namespace Colors
 	static constexpr Color Yellow = MakeRGB(255u, 255u, 0u);
 	static constexpr Color Cyan = MakeRGB(0u, 255u, 255u);
 	static constexpr Color Magenta = MakeRGB(255u, 0u, 255u);
-}
+}	

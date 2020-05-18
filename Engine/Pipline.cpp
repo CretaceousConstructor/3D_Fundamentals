@@ -8,6 +8,7 @@ Pipline::Pipline(Graphics& GFX)
 	camera({ 0.f,0.f,0.f }, { 0.f,0.f,-1.f }, { 0.f,1.f,0.f }),
 	TextureEffect("D://CS//ChiliEngine//Bmp//tex.bmp")
 { 
+
 	//(cubnoid space)orthographicSpce -> (NDC space [-1,1]^3)
 	ScaleMa = Mat4::Identity();
 	ScaleMa.elements[0][0] = 2.f / (Spectrum::r - Spectrum::l);
@@ -23,7 +24,7 @@ Pipline::Pipline(Graphics& GFX)
 		 0.f          ,   0.f        ,              1.f  ,  0.f
 	};
 	perspectiveProjection = perspectiveToOrtho;
-	
+	ColorEffect.gs.BindColors({ Colors::Red,Colors::Green,Colors::Blue,Colors::Magenta,Colors::Yellow,Colors::Cyan });
 
 
 }

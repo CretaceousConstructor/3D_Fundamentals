@@ -2,9 +2,11 @@
 
 
 
-template <typename T, typename S>
+template <typename P,typename V,typename G>
 class ColorEffect {
 public:
 	ColorEffect() = default;
-	S ps;
+	P ps;
+	V vs;
+	G gs;
 };

@@ -18,6 +18,7 @@ public:
 	explicit operator _Vec3<T2>() const {
 		return { (T2)x,(T2)y,(T2)z };
 	}
+
 	T		LenSq() const
 	{
 		return sq(*this);
@@ -124,7 +125,8 @@ public:
 	{
 		return Color{ (unsigned char)x,(unsigned char)y,(unsigned char)z };
 	}
-
+	
+	
 
 public:
 	T z;
@@ -133,3 +135,9 @@ public:
 typedef _Vec3<float> Vec3;
 typedef _Vec3<double> Ved3;
 typedef _Vec3<int> Vei3;
+
+
+static Vec3 toVec3(Color c)
+{
+	return Vec3{ (float)c.GetR(), (float)c.GetG(), (float)c.GetB() };
+}
