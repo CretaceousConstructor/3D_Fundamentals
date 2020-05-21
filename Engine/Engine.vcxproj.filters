@@ -174,9 +174,6 @@
     <ClInclude Include="SolidCube.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="SolidVertex.h">
-      <Filter>Header Files\Vertex</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderChoser.h">
       <Filter>Header Files\Shader</Filter>
     </ClInclude>
@@ -231,9 +228,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pipline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureVertex.cpp">

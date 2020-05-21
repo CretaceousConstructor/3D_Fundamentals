@@ -26,9 +26,9 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),                         
-	pip(gfx)
+	pipColorEffect(gfx)
 {
-
+	pipColorEffect.gs.BindColors({ Colors::Red,Colors::Green,Colors::Blue,Colors::Magenta,Colors::Yellow,Colors::Cyan });
 
 }
 
@@ -45,8 +45,8 @@ void Game::UpdateModel()
 
 	const float dt = clock.Mark();
 	pipUpdate(dt);
-	Ccube.update(dt);
-	Tcube.update(dt);
+	//Ccube.update(dt);
+	//Tcube.update(dt);
 	Ncube.update(dt);
 
 	//pip.SeparateIndexesListAndVertex(Ccube.IndicesList, Ccube.VertexList);
@@ -54,8 +54,8 @@ void Game::UpdateModel()
 
 	//pip.SeparateIndexesListAndVertex(WaveyPlane::GetTextureIndicesList(), WaveyPlane::GetTextureVertexList(0.5f));
 
-	pip.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList);
-
+	//pip.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList);
+	pipColorEffect.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList);
 }
 
 
@@ -67,37 +67,37 @@ void Game::ComposeFrame()
 void Game::pipUpdate(float dt)
 {
 	if (wnd.kbd.KeyIsPressed('B')) {
-		pip.camera.moveu();
+		pipColorEffect.camera.moveu();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
-		pip.camera.moved();
+		pipColorEffect.camera.moved();
 	}
 	if (wnd.kbd.KeyIsPressed('A')) {
-		pip.camera.movel();
+		pipColorEffect.camera.movel();
 	}
 	if (wnd.kbd.KeyIsPressed('D')) {
-		pip.camera.mover();
+		pipColorEffect.camera.mover();
 	}
 	if (wnd.kbd.KeyIsPressed('W')) {
-		pip.camera.movef();
+		pipColorEffect.camera.movef();
 	}
 	if (wnd.kbd.KeyIsPressed('S')) {
-		pip.camera.moveb();
+		pipColorEffect.camera.moveb();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
-		pip.camera.RotateHorizontallyL();
+		pipColorEffect.camera.RotateHorizontallyL();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
-		pip.camera.RotateHorizontallyR();
+		pipColorEffect.camera.RotateHorizontallyR();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
-		pip.camera.RotateVerticallyB();
+		pipColorEffect.camera.RotateVerticallyB();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_UP)) {
-		pip.camera.RotateVerticallyU();
+		pipColorEffect.camera.RotateVerticallyU();
 	}
 
-	pip.TextureEffect.vs.SetTime(dt);
+	//pip.TextureEffect.vs.SetTime(dt);
 
 
 

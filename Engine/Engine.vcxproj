@@ -159,7 +159,6 @@
     <ClInclude Include="ShaderChoser.h" />
     <ClInclude Include="SolidCube.h" />
     <ClInclude Include="SolidGeometryShader.h" />
-    <ClInclude Include="SolidVertex.h" />
     <ClInclude Include="NormalVertexShader.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="MainWindow.h" />
@@ -204,7 +203,6 @@
     <ClCompile Include="NDCScreenTransformer.cpp" />
     <ClCompile Include="SolidCube.cpp" />
     <ClCompile Include="SolidVertex.cpp" />
-    <ClCompile Include="Pipline.cpp" />
     <ClCompile Include="Snow.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Surface.cpp" />

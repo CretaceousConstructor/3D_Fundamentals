@@ -1,5 +1,6 @@
 #pragma once
 #include "Cube.h"
+#include "ColorEffect.h"
 class SolidCube {
 public:
 	SolidCube()
@@ -27,7 +28,7 @@ public:
 	Mat4 TranslationMat = Mat4::Identity();
 
 	std::vector<Indexes> IndicesList;
-	std::vector<SolidVertex>  VertexList;
+	std::vector<typename ColorEffect::Vs::vIn>  VertexList;
 	static constexpr float side = 0.5f;
 	static constexpr float rotateSpeedInRadius = 5.f;
 

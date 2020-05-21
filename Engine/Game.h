@@ -26,7 +26,9 @@
 #include "TextureCube.h"
 #include "WaveyPlane.h"
 #include "SolidCube.h"
-#include "ShaderChoser.h"
+
+
+#include "ColorEffect.h"
 class Game
 {
 public:
@@ -48,10 +50,11 @@ private:
 	/********************************/
 	/*  User Variables              */
 	Timer clock;
-	Pipline pip;
-	ColorCube Ccube;
-	TextureCube Tcube;
+	Pipline<ColorEffect> pipColorEffect;
 	SolidCube Ncube;
+	Vec3 lightDirection = { 0.f,0.f,-1.f };
+	Vec3 lightColor = { 0.5f,0.5f,0.5f };
+
 	/********************************/
 };
 

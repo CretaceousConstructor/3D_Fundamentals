@@ -7,6 +7,7 @@ public:
 	ColorVertex() = default;
 	ColorVertex(Pointf4 a, Vec3 c);
 	ColorVertex(const ColorVertex& rhs);
+
 	ColorVertex operator+(const ColorVertex& rhs) const;
 	ColorVertex& operator+= (const ColorVertex& rhs);
 	ColorVertex  operator-(const ColorVertex& rhs)const;

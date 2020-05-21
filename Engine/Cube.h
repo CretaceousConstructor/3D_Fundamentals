@@ -7,6 +7,11 @@
 #include "TextureVertex.h"
 #include "ColorVertex.h"
 #include "SolidVertex.h"
+
+
+#include "ColorEffect.h"
+
+
 class Cube
 {
 public:
@@ -125,17 +130,17 @@ public:
 	}
 
 
-	static std::vector<SolidVertex> GetNormalVertexList(float side) {
-		std::vector<SolidVertex> result;
+	static std::vector<typename ColorEffect::Vs::vIn> GetNormalVertexList(float side) {
+		std::vector<typename ColorEffect::Vs::vIn> result;
 
-		result.emplace_back(SolidVertex(Pointf4{ side,side,    (side)  })); //0
-		result.emplace_back(SolidVertex(Pointf4{ side,side,    (-side) }));//1
-		result.emplace_back(SolidVertex(Pointf4{ -side,side,   (-side) }));//2
-		result.emplace_back(SolidVertex(Pointf4{ -side,side,   (side)  }));	 //3
-		result.emplace_back(SolidVertex(Pointf4{ side,-side,   (-side) }));// 4
-		result.emplace_back(SolidVertex(Pointf4{ side,-side,   (side)  }));//   5
-		result.emplace_back(SolidVertex(Pointf4{ -side,-side,  (side)  }));//   6
-		result.emplace_back(SolidVertex(Pointf4{ -side,-side,  (-side) }));// 7
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side)  })); //0
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (-side) }));//1
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (-side) }));//2
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side)  }));	 //3
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (-side) }));// 4
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side)  }));//   5
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side)  }));//   6
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (-side) }));// 7
 
 
 
