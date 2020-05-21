@@ -54,7 +54,7 @@ void Game::UpdateModel()
 
 	//pip.SeparateIndexesListAndVertex(WaveyPlane::GetTextureIndicesList(), WaveyPlane::GetTextureVertexList(0.5f));
 
-	pip.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList, ShaderChoser{0,1,2});
+	pip.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList);
 
 }
 

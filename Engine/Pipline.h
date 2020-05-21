@@ -35,21 +35,26 @@ public:
 	Pipline() = delete;
 	Pipline(Graphics& GFX);
 	template <typename Vertex>
-	void SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes, ShaderChoser choser);
+	void SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes);
 	template <typename Vertex>
-	void GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes, ShaderChoser choser);
+	void GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes);
 	template <typename Vertex>
-	void AssembleTriangle(const std::vector<Indexes> IndexesList, const std::vector<Vertex>& vertexes ,ShaderChoser choser);
+	void AssembleTriangle(const std::vector<Indexes> IndexesList, const std::vector<Vertex>& vertexes);
 	template <typename Vertex>
-	void ProcessTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2,int i, ShaderChoser choser);
+	void ProcessTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2,int i);
 	template <typename Vertex>
-	void PostProcessTriangle(_Triangle<Vertex> triangle, ShaderChoser choser);
+	void PostProcessTriangle(_Triangle<Vertex> triangle);
 	template <typename Vertex>
-	void DrawTriangle(const _Triangle<Vertex>& tr, ShaderChoser choser);
+	void DrawTriangle(const _Triangle<Vertex>& tr);
 	template <typename Vertex>
-	void DrawFlatTopTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2, ShaderChoser choser);//draw in clockwise order 
+	void DrawFlatTopTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);//draw in clockwise order 
 	template <typename Vertex>
-	void DrawFlatBottomTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2, ShaderChoser choser);//draw in counterclockwise order 
+	void DrawFlatBottomTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);//draw in counterclockwise order 
+
+	void set(unsigned int vs, unsigned int gs, unsigned int ps) {
+
+	}
+
 
 	template <typename Vertex>
 	Color GetColor(Vertex v) {
@@ -73,7 +78,7 @@ public:
 	auto GetVertex(const ColorVertex& v) {
 		return ColorEffect.vs(v);
 	}
-
+	 
 	template <>
 	auto GetVertex(const TextureVertex& v) {
 		return TextureEffect.vs(v);
@@ -107,26 +112,26 @@ public:
 	TextureEffect<TexturePixelShader,WaveyVertexShader, SolidGeometryShader> TextureEffect;
 	ColorEffect<ColorPixelShader,NormalVertexShader, SolidGeometryShader> ColorEffect;
 
+
+
+
+
 	//TexturePixelShader	texPs;
-	ColorPixelShader	colorPs;  
-	WaveyVertexShader	waveyVs;  
-	NormalVertexShader	normalVs; 
-	SolidGeometryShader	solidGs;  
-
-
-
-
+	//ColorPixelShader	colorPs;  
+	//WaveyVertexShader	waveyVs;  
+	//NormalVertexShader	normalVs; 
+	//SolidGeometryShader	solidGs;  
 
 };
 
 template<typename Vertex>
-inline void Pipline::SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes, ShaderChoser choser)
+inline void Pipline::SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes)
 {
 	GoThroughVertexTransformation(IndexesList, vertexes);
 }
 
 template<typename Vertex>
-inline void Pipline::GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes,ShaderChoser choser)
+inline void Pipline::GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<Vertex>& vertexes)
 {
 
 	std::vector<Vertex> verticesOut;
