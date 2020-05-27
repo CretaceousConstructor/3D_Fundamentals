@@ -72,7 +72,10 @@ public:
 		for (auto& v : verticesOut) {
 			camera.cameraTransformation *= v.p;
 		}
+
+
 		AssembleTriangle(IndexesList, verticesOut);
+
 	}
 
 	inline void Pipline::AssembleTriangle(const std::vector<Indexes> IndexesList, const std::vector<typename Effect::Vs::vIn>& vertexes)
@@ -82,7 +85,7 @@ public:
 			const auto& v0 = vertexes[indexes[0]];
 			const auto& v1 = vertexes[indexes[1]];
 			const auto& v2 = vertexes[indexes[2]];
-			if ((Vec4::dot((v1.p - v0.p), (v2.p - v0.p)) * Vec4(v0.p)) < 0.f) {// do backface culling in world space or viewspace or you fucked up
+			if ((Vec4::cross((v1.p - v0.p), (v2.p - v0.p)) * Vec4(v0.p)) < 0.f) {// do backface culling in world space or (camera space)viewspace, or you fucked up
 				ProcessTriangle(vs(v0), vs(v1), vs(v2), i);
 			}
 			i++;
@@ -285,6 +288,7 @@ public:
 				//       v1----v2
 
 				float alpha = (float(y) + 0.5f - v0.p.y) / (v1.p.y - v0.p.y);
+
 
 				vPrime = v0 + (v1 - v0) * alpha;
 				vPrimePrime = v0 + (v2 - v0) * alpha;

@@ -5,8 +5,8 @@ class SolidCube {
 public:
 	SolidCube()
 		:
-		IndicesList(Cube::GetNormalIndicesList(side)),
-		VertexList(Cube::GetNormalVertexList(side))
+		IndicesList(Cube::GetLishtIndicesList(side)),
+		VertexList(Cube::GetLightVertexList(side))
 
 	{
 		//model space to world space
@@ -30,7 +30,7 @@ public:
 	std::vector<Indexes> IndicesList;
 	std::vector<typename ColorEffect::Vs::vIn>  VertexList;
 	static constexpr float side = 0.5f;
-	static constexpr float rotateSpeedInRadius = 5.f;
+	static constexpr float rotateSpeedInRadius = 2.f;
 
 
 

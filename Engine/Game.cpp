@@ -45,17 +45,11 @@ void Game::UpdateModel()
 
 	const float dt = clock.Mark();
 	pipUpdate(dt);
-	//Ccube.update(dt);
-	//Tcube.update(dt);
+
 	Ncube.update(dt);
 
-	//pip.SeparateIndexesListAndVertex(Ccube.IndicesList, Ccube.VertexList);
-	//pip.SeparateIndexesListAndVertex(Tcube.IndicesList, Tcube.VertexList);
-
-	//pip.SeparateIndexesListAndVertex(WaveyPlane::GetTextureIndicesList(), WaveyPlane::GetTextureVertexList(0.5f));
-
-	//pip.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList);
 	pipColorEffect.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList);
+
 }
 
 
@@ -96,9 +90,5 @@ void Game::pipUpdate(float dt)
 	if (wnd.kbd.KeyIsPressed(VK_UP)) {
 		pipColorEffect.camera.RotateVerticallyU();
 	}
-
-	//pip.TextureEffect.vs.SetTime(dt);
-
-
 
 }

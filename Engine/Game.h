@@ -51,9 +51,9 @@ private:
 	/*  User Variables              */
 	Timer clock;
 	Pipline<ColorEffect> pipColorEffect;
+
 	SolidCube Ncube;
-	Vec3 lightDirection = { 0.f,0.f,-1.f };
-	Vec3 lightColor = { 0.5f,0.5f,0.5f };
+	
 
 	/********************************/
 };

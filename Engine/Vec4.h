@@ -7,7 +7,7 @@ class _Vec4 {
 
 public:
 	_Vec4() = default;//default constructor
-	_Vec4(T x, T y, T z) : x(x), y(y), z(z){}
+	_Vec4(T x, T y, T z) : x(x), y(y), z(z) {}
 
 
 	_Vec4(const _Vec4& vect)
@@ -47,12 +47,24 @@ public:
 	}
 
 
-	_Vec4 operator- () const
+	_Vec4 operator-() const
 	{
-		_Vec4 result(-x,-y,-z);
+		_Vec4 result(-x, -y, -z);
 		return result;
 	}
 
+
+	_Vec4& operator -=(const _Vec4& rhs) {
+		x -= rhs.x;
+		y -= rhs.y;
+		z -= rhs.z;
+		return *this;
+	}
+
+	_Vec4 operator-(const _Vec4& rhs) const
+	{
+		return _Vec4(*this) -= rhs;
+	}
 
 
 
@@ -94,10 +106,19 @@ public:
 
 
 
-	static _Vec4 dot(_Vec4 const& v1, _Vec4 const& v2) {
+	static _Vec4 cross(const _Vec4&    v1, const _Vec4& v2) {
 
-		return { v1.y * v2.z - v2.y * v1.z, v1.z * v2.x - v1.x * v2.z , v1.x * v2.y - v1.y * v2.x };
+		return _Vec4{ v1.y * v2.z - v2.y * v1.z, v1.z * v2.x - v1.x * v2.z , v1.x * v2.y - v1.y * v2.x };
 	}
+
+	static float dot(_Vec4 const& v1, _Vec4 const& v2) {
+
+		return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+
+	}
+
+
+
 
 public:
 	_Point4<T> s;

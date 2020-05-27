@@ -27,6 +27,9 @@ void SolidCube::update(float dt)
 	for (auto& Vertex : VertexList) {
 		temp *= Vertex.p;
 		RotationMat *= Vertex.p;
+
+		RotationMat *= Vertex.normal;
+		
 		TranslationMat *= Vertex.p;
 	}
 

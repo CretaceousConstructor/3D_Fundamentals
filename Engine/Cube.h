@@ -42,9 +42,6 @@ public:
 
 		result.emplace_back(TextureVertex(Pointf4{ side,-side,      (-side) }, Vec2{ 0.5f,0.f }));//13
 
-
-
-
 		return std::move(result);
 	}
 	static std::vector<Indexes> GetTextureIndicesList(float side) {
@@ -133,14 +130,14 @@ public:
 	static std::vector<typename ColorEffect::Vs::vIn> GetNormalVertexList(float side) {
 		std::vector<typename ColorEffect::Vs::vIn> result;
 
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side)  })); //0
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (-side) }));//1
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (-side) }));//2
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side)  }));	 //3
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (-side) }));// 4
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side)  }));//   5
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side)  }));//   6
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (-side) }));// 7
+		//result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side)  } ,{})); //0
+		//result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (-side) } ,{}));//1
+		//result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (-side) } ,{}));//2
+		//result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side)  } ,{}));	 //3
+		//result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (-side) } ,{}));// 4
+		//result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side)  } ,{}));//   5
+		//result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side)  } ,{}));//   6
+		//result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (-side) } ,{}));// 7
 
 
 
@@ -178,6 +175,90 @@ public:
 
 		return std::move(result);
 	}
+
+	static std::vector<typename ColorEffect::Vs::vIn> GetLightVertexList(float side) {
+
+
+		std::vector<typename ColorEffect::Vs::vIn> result;
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side) },  Vec4{ 0.f,1.f,0.f })); //0
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (-side) }, Vec4{ 0.f,1.f,0.f }));//1
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (-side) }, Vec4{ 0.f,1.f,0.f }));//2
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side) },  Vec4{ 0.f,1.f,0.f }));//3
+
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side) },   Vec4{ 0.f,-1.f,0.f }));//4
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side) },   Vec4{ 0.f,-1.f,0.f }));//5
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,   (-side) }, Vec4{ 0.f,-1.f,0.f }));//12
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,    (-side) }, Vec4{ 0.f,-1.f,0.f }));//13
+
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side) },   Vec4{ -1.f,0.f,0.f }));	 //3
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,    (-side) }, Vec4{ -1.f,0.f,0.f }));//8
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,   (-side) }, Vec4{ -1.f,0.f,0.f }));//9
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side) },   Vec4{ -1.f,0.f,0.f }));	 //5
+
+
+
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side) }, Vec4{ 0.f,0.f,1.f }));      //0
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side) }, Vec4{ 0.f,0.f,1.f }));	  //3
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side) }, Vec4{ 0.f,0.f,1.f }));	  //5
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side) }, Vec4{ 0.f,0.f,1.f }));	  //4
+
+
+
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,     (-side) }, Vec4{ 1.f, 0.f,0.f }));  //10
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side) }, Vec4{ 1.f, 0.f,0.f }));   //0
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side) }, Vec4{ 1.f, 0.f,0.f }));  //4
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (-side) }, Vec4{ 1.f, 0.f,0.f }));  //6 
+
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,    (-side) }, Vec4{ 0.f,0.f,-1.f }));//11
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,     (-side) }, Vec4{ 0.f,0.f,-1.f }));//10
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (-side) },  Vec4{ 0.f,0.f,-1.f }));//6 
+		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (-side) },  Vec4{ 0.f,0.f,-1.f }));//7
+
+ //result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,      (-side) }, Vec4{ 0.f,0.666f }));//8
+ //result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,     (-side) }, Vec4{ 0.f,0.333f }));//9
+ //result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,       (-side) }, Vec4{ 0.75f,0.666f }));//10
+ //result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,      (-side) }, Vec4{ 1.f,0.666f }));//11
+ //result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,     (-side) }, Vec4{ 0.25f,0.f }));//12
+ //result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,      (-side) }, Vec4{ 0.5f,0.f }));//13
+
+
+		return std::move(result);
+
+
+	}
+	static std::vector<Indexes> GetLishtIndicesList(float side) {
+
+		std::vector<Indexes> result;
+
+
+
+		result.emplace_back(Indexes{ 0,1,2 });
+		result.emplace_back(Indexes{ 2,3,0 });
+
+		result.emplace_back(Indexes{ 7 ,4,5 });
+		result.emplace_back(Indexes{ 5,6,7 });
+
+		result.emplace_back(Indexes{ 11,8,9 });
+		result.emplace_back(Indexes{ 9,10,11 });
+
+		result.emplace_back(Indexes{ 15,12,13 });
+		result.emplace_back(Indexes{ 13,14,15 });
+
+		result.emplace_back(Indexes{ 19,16,17 });
+		result.emplace_back(Indexes{ 17,18,19 });
+
+
+
+
+
+		result.emplace_back(Indexes{ 23,20,21 });
+		result.emplace_back(Indexes{ 21,22,23 });
+			
+
+		return std::move(result);
+
+	}
+
 
 
 

@@ -6,42 +6,35 @@
 class ColorEffect {
 public:
 	ColorEffect() = default;
-	class Ps {
-	public:
-		Ps() = default;
-		template<typename T>
-		Color operator()(const T& in) const {
-			return Color(in.color);
-		}
-	};
+
 	class Vs {
 	public:
 		Vs() = default;
+		class vOut;
 		template <typename T>
-		T operator()(const T& in) const {
-			return in;
+		vOut operator()(const T& in) const {
+
+		
+			Vec3 n{ in.normal.x,in.normal.y,in.normal.z };
+			float costheta = ((-n.GetNormalized())) * (lightDirection.GetNormalized());
+
+
+			Vec3 c = Vec3::GetHadamard(surfaceColor, ((lightColor * costheta + abientLight)).Saturate() * 255.f);
+			return { in.p,(Color)c };
 		}
+
 		class vIn {
 		public:
 			vIn() = default;
-			/*vIn(Pointf4 a);
-			vIn(const vIn& rhs);
-			vIn operator+(const vIn& rhs) const;
-			vIn& operator+= (const vIn& rhs);
-			vIn  operator-(const vIn& rhs)const;
-			vIn& operator-=(const vIn& rhs);
-			vIn  operator* (const float rhs) const;
-			vIn& operator*= (const float rhs);
-			vIn& operator= (const vIn& rhs);
-			*/
-			
 
-			vIn(Pointf4 a)
-				:p(a)
+			vIn(Pointf4 a, Vec4 b)
+				:p(a),
+				normal(b)
 			{
 			}
 			vIn(const vIn& rhs)
-				: p(rhs.p)
+				: p(rhs.p),
+				normal(rhs.normal)
 			{
 			}
 
@@ -53,6 +46,7 @@ public:
 			vIn& operator+=(const vIn& rhs)
 			{
 				p += rhs.p;
+				normal += rhs.normal;
 				return *this;
 			}
 
@@ -64,6 +58,7 @@ public:
 			vIn& operator-=(const vIn& rhs)
 			{
 				p -= rhs.p;
+				normal -= rhs.normal;
 				return *this;
 			}
 
@@ -75,46 +70,116 @@ public:
 			vIn& operator*=(const float rhs)
 			{
 				p *= rhs;
+				normal *= rhs;
 				return *this;
 			}
 
 			vIn& operator=(const vIn& rhs)
 			{
 				p = rhs.p;
+				normal = rhs.normal;
 				return *this;
 			}
-			Pointf4 p;
 
+			Pointf4 p;
+			Vec4 normal;
 		};
-		typedef vIn vOut;
-	};
-	class Gs {
-	public:
-		typedef Vs::vOut vIn;
-		Gs() = default;
+
 		class vOut {
 		public:
 			vOut() = default;
-			/*vOut(Pointf4 a, Vec3 c);
-			vOut(const vOut& rhs);
-			vOut operator+(const vOut& rhs) const;
-			vOut& operator+= (const vOut& rhs);
-			vOut  operator-(const vOut& rhs)const;
-			vOut& operator-=(const vOut& rhs);
-			vOut  operator* (const float rhs) const;
-			vOut& operator*= (const float rhs);
-			vOut& operator= (const vOut& rhs);*/
 
-			Pointf4 p;
-			Vec3 color;
-			 vOut(Pointf4 a, Vec3 c)
+			vOut(Pointf4 a, Color b)
 				:p(a),
-				color(c)
+				c(b)
 			{
 			}
-			 vOut(const vOut& rhs)
+			vOut(const vOut& rhs)
 				: p(rhs.p),
-				color(rhs.color)
+				c(rhs.c)
+			{
+			}
+
+			vOut& operator=(const vOut& rhs)
+			{
+				c = rhs.c;
+				p = rhs.p;
+				return *this;
+			}
+
+			vOut operator+(const vOut& rhs) const
+			{
+				return vOut(*this) += rhs;
+			}
+
+			vOut& operator+=(const vOut& rhs)
+			{
+				p += rhs.p;
+
+				return *this;
+			}
+
+			vOut operator-(const vOut& rhs) const
+			{
+				return vOut(*this) -= rhs;
+			}
+
+			vOut& operator-=(const vOut& rhs)
+			{
+				p -= rhs.p;
+
+				return *this;
+			}
+
+			vOut operator*(const float rhs) const
+			{
+				return vOut(*this) *= rhs;
+			}
+
+			vOut& operator*=(const float rhs)
+			{
+				p *= rhs;
+
+				return *this;
+			}
+
+
+			Pointf4 p;
+			Color c;
+		};
+
+
+		Vec3 lightDirection = { 0.f,0.f,-1.f };
+		const Vec3 originLightDirection = { 0.f,0.f,-1.f };
+		const Vec3 lightColor = { 0.1f,0.2f,0.8f };
+		const Vec3 surfaceColor = { 1.f,1.f,1.f };
+		const Vec3 abientLight = { 0.2f,0.2f,0.2f };
+
+
+	};
+	class Gs {
+	public:
+
+		typedef Vs::vOut vIn;
+		typedef Vs::vOut vOut;
+		Gs() = default;
+		/*class vOut {
+		public:
+			vOut() = default;
+
+			Pointf4 p;
+			Pointf4 normal;
+			Vec3 color;
+			vOut(Pointf4 a, Vec3 c, Pointf4 n)
+				:p(a),
+				color(c),
+				normal(n)
+			{
+			}
+			vOut(const vOut& rhs)
+				: p(rhs.p),
+				color(rhs.color),
+				normal(rhs.normal)
 			{
 			}
 			vOut  operator+(const vOut& rhs) const
@@ -122,10 +187,11 @@ public:
 				return vOut(*this) += rhs;
 			}
 
-			vOut&  operator+=(const vOut& rhs)
+			vOut& operator+=(const vOut& rhs)
 			{
 				p += rhs.p;
 				color += rhs.color;
+				normal += rhs.normal;
 
 				return *this;
 			}
@@ -134,10 +200,11 @@ public:
 				return vOut(*this) -= rhs;
 			}
 
-			vOut&  operator-=(const vOut& rhs)
+			vOut& operator-=(const vOut& rhs)
 			{
 				p -= rhs.p;
 				color -= rhs.color;
+				normal -= rhs.normal;
 				return *this;
 			}
 
@@ -147,34 +214,30 @@ public:
 				return vOut(*this) *= rhs;
 			}
 
-			vOut&  operator*=(const float rhs)
+			vOut& operator*=(const float rhs)
 			{
 				p *= rhs;
-
 				color *= rhs;
+				normal *= rhs;
 				return *this;
 			}
 
-			vOut&  operator=(const vOut& rhs)
+			vOut& operator=(const vOut& rhs)
 			{
 				p = rhs.p;
 				color = rhs.color;
+				normal = rhs.normal;
 				return *this;
 			}
 
 
 
-		};
+		};*/
+
 
 		template <typename T>
 		_Triangle<vOut> operator()(const T& v0, const T& v1, const T& v2, const int triangle_index) const {
-
-			return
-			{
-				vOut{v0.p,toVec3(triangle_colors[triangle_index / 2])},
-				vOut{v1.p,toVec3(triangle_colors[triangle_index / 2])},
-				vOut{v2.p,toVec3(triangle_colors[triangle_index / 2])}
-			};
+			return{ v0,v1,v2 };
 		}
 
 
@@ -184,5 +247,12 @@ public:
 	private:
 		std::vector<Color> triangle_colors;
 	};
-
+	class Ps {
+	public:
+		Ps() = default;
+		template<typename T>
+		Color operator()(const T& in) const {
+			return in.c;
+		}
+	};
 };

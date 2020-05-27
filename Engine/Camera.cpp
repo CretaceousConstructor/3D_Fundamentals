@@ -13,7 +13,7 @@ Camera::Camera(Pointf4 wl, Vec4 la, Vec4 lu)
 	lookAt.Normalize();
 	lookUp.Normalize();
 	Mat4 viewTranslation = Mat4::Translation(-wl.x, -wl.y, -wl.z);
-	Vec4 gDott = Vec4::dot(lookAt, lookUp);
+	Vec4 gDott = Vec4::cross(lookAt, lookUp);
 	Mat4 viewRotation = {
 		  gDott.x  ,   gDott.y ,  gDott.z   ,0.f,
 		 lookUp.x  ,  lookUp.y ,  lookUp.z  ,0.f,
@@ -27,7 +27,7 @@ Camera::Camera(Pointf4 wl, Vec4 la, Vec4 lu)
 void Camera::Update()
 {
 	Mat4 viewTranslation = Mat4::Translation(-worldLocation.x, -worldLocation.y, -worldLocation.z);
-	Vec4 gDott = Vec4::dot(lookAt, lookUp);
+	Vec4 gDott = Vec4::cross(lookAt, lookUp);
 	Mat4 viewRotation = {
 		  gDott.x  ,   gDott.y ,  gDott.z   ,0.f,
 		 lookUp.x  ,  lookUp.y ,  lookUp.z  ,0.f,
@@ -53,7 +53,7 @@ void Camera::RotateHorizontallyR()
 
 void Camera::RotateVerticallyU()
 {
-	Vec4 axis = Vec4::dot(lookAt, lookUp);
+	Vec4 axis = Vec4::cross(lookAt, lookUp);
 	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt, rotateSpeed, axis);
 	lookUp = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookUp, rotateSpeed, axis);
 	Update();
@@ -61,7 +61,7 @@ void Camera::RotateVerticallyU()
 }
 void Camera::RotateVerticallyB()
 {
-	Vec4 axis = Vec4::dot(lookAt, lookUp);
+	Vec4 axis = Vec4::cross(lookAt, lookUp);
 	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt,-rotateSpeed, axis);
 	lookUp = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookUp,-rotateSpeed, axis);
 	Update();
@@ -88,7 +88,7 @@ void Camera::moved()
 
 void Camera::movel()
 {
-	worldLocation += (-(Vec4::dot(lookAt, lookUp)) * speed);
+	worldLocation += (-(Vec4::cross(lookAt, lookUp)) * speed);
 	Update();
 }
 
@@ -98,7 +98,7 @@ void Camera::movel()
 
 void Camera::mover()
 {
-	worldLocation += ((Vec4::dot(lookAt, lookUp)) * speed);
+	worldLocation += ((Vec4::cross(lookAt, lookUp)) * speed);
 	Update();
 }
 

@@ -98,9 +98,9 @@ public:
 	{
 		return _Vec3(*this) *= rhs;
 	}
-	
-	
-	
+
+
+
 	_Vec3& operator/=(const T& rhs)
 	{
 		x /= rhs;
@@ -121,12 +121,39 @@ public:
 		return !(*this == rhs);
 	}
 
-	explicit operator Color()  const
+	explicit operator Color()const
 	{
 		return Color{ (unsigned char)x,(unsigned char)y,(unsigned char)z };
 	}
-	
-	
+
+	static _Vec3 GetHadamard(_Vec3 lhs,_Vec3 rhs) {
+		return { lhs.x * rhs.x ,lhs.y * rhs.y,lhs.z * rhs.z };
+	}
+	_Vec3 Saturate() {
+		if (x < (T)0) {
+			x = (T)0;
+		}
+		if (x > (T)1.0f) {
+			x = (T)1.0f;
+		}
+
+		if (y < (T)0) {
+			y = (T)0;
+		}
+		if (y > (T)1.0f) {
+			y = (T)1.0f;
+		}
+
+		if (z < (T)0) {
+			z = (T)0;
+		}
+		if (z > (T)1.0f) {
+			z = (T)1.0f;
+		}
+
+
+		return *this;
+	}
 
 public:
 	T z;

@@ -1,6 +1,7 @@
 #pragma once
 #include "ChiliMath.h"
 #include "Vec4.h"
+#include "Vec3.h"
 #include <cstring>
 
 template <typename T>
@@ -142,7 +143,7 @@ namespace Mat {
 		const T sinTheta = (T)sin(theta);
 
 		k.Normalize();
-		_Vec4<T> vRot = v * cosTheta + (_Vec4<T>::dot(k, v)) * sinTheta + k * (k * v) * ((T)1.0 - cosTheta);
+		_Vec4<T> vRot = v * cosTheta + (_Vec4<T>::cross(k, v)) * sinTheta + k * (k * v) * ((T)1.0 - cosTheta);
 
 		return vRot;
 
@@ -158,7 +159,7 @@ namespace Mat {
 		_Vec4<T> v = p;
 
 
-		_Vec4<T> vRot = v * cosTheta + (_Vec4<T>::dot(k, v)) * sinTheta + k * (k * v) * ((T)1.0 - cosTheta);
+		_Vec4<T> vRot = v * cosTheta + (_Vec4<T>::cross(k, v)) * sinTheta + k * (k * v) * ((T)1.0 - cosTheta);
 
 		return { vRot.x,vRot.y,vRot.z,(T)1.0 };
 
@@ -216,9 +217,49 @@ _Vec4<T> operator*(const _Mat4<T>& lhs, const _Vec4<T>& rhs)
 		rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2],
 		rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2],
 		rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2],
-		(T)0.0
 	};
 }
+
+
+template<typename T>
+_Vec4<T>& operator*=(const _Mat4<T>& lhs,  _Vec4<T>& rhs)
+{
+	
+		rhs.x = rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2];
+		rhs.y = rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2];
+		rhs.z = rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2];
+
+		return rhs;
+
+}
+
+template<typename T>
+_Vec3<T>& operator*=(const _Mat4<T>& lhs, _Vec3<T>& rhs)
+{
+
+	rhs.x = rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2];
+	rhs.y = rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2];
+	rhs.z = rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2];
+
+	return rhs;
+
+}
+
+
+
+template<typename T>
+_Vec3<T> operator*(const _Mat4<T>& lhs, const _Vec3<T>& rhs)
+{
+
+	_Vec3<T> result;
+	result.x = rhs.x * lhs.elements[0][0] + rhs.y * lhs.elements[0][1] + rhs.z * lhs.elements[0][2];
+	result.y = rhs.x * lhs.elements[1][0] + rhs.y * lhs.elements[1][1] + rhs.z * lhs.elements[1][2];
+	result.z = rhs.x * lhs.elements[2][0] + rhs.y * lhs.elements[2][1] + rhs.z * lhs.elements[2][2];
+
+	return result;
+
+}
+
 
 
 
