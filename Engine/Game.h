@@ -25,10 +25,12 @@
 #include "ColorCube.h"
 #include "TextureCube.h"
 #include "WaveyPlane.h"
+
 #include "SolidCube.h"
-
-
 #include "ColorEffect.h"
+#include "Sphere.h"
+#include "PointLightEffect.h"
+#include "PerPixelEffect.h"
 class Game
 {
 public:
@@ -51,9 +53,9 @@ private:
 	/*  User Variables              */
 	Timer clock;
 	Pipline<ColorEffect> pipColorEffect;
-
+	Pipline<PerPixelEffect> perPiexlLight;
 	SolidCube Ncube;
-	
+	Sphere sp;
 
 	/********************************/
 };

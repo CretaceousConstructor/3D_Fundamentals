@@ -11,7 +11,8 @@
 
 #include "ColorEffect.h"
 
-
+#include "PointLightEffect.h"
+#include "PerPixelEffect.h"
 class Cube
 {
 public:
@@ -176,43 +177,46 @@ public:
 		return std::move(result);
 	}
 
-	static std::vector<typename ColorEffect::Vs::vIn> GetLightVertexList(float side) {
 
 
-		std::vector<typename ColorEffect::Vs::vIn> result;
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side) },  Vec4{ 0.f,1.f,0.f })); //0
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (-side) }, Vec4{ 0.f,1.f,0.f }));//1
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (-side) }, Vec4{ 0.f,1.f,0.f }));//2
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side) },  Vec4{ 0.f,1.f,0.f }));//3
-
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side) },   Vec4{ 0.f,-1.f,0.f }));//4
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side) },   Vec4{ 0.f,-1.f,0.f }));//5
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,   (-side) }, Vec4{ 0.f,-1.f,0.f }));//12
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,    (-side) }, Vec4{ 0.f,-1.f,0.f }));//13
-
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side) },   Vec4{ -1.f,0.f,0.f }));	 //3
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,    (-side) }, Vec4{ -1.f,0.f,0.f }));//8
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,   (-side) }, Vec4{ -1.f,0.f,0.f }));//9
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side) },   Vec4{ -1.f,0.f,0.f }));	 //5
+	static std::vector<typename PerPixelEffect::Vs::vIn> GetLightVertexList(float side) {
 
 
+		std::vector<typename PerPixelEffect::Vs::vIn> result;
 
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side) }, Vec4{ 0.f,0.f,1.f }));      //0
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,   (side) }, Vec4{ 0.f,0.f,1.f }));	  //3
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (side) }, Vec4{ 0.f,0.f,1.f }));	  //5
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side) }, Vec4{ 0.f,0.f,1.f }));	  //4
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ side,side,    (side) },  Vec4{ 0.f,1.f,0.f })  ); //0
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ side,side,    (-side) }, Vec4{ 0.f,1.f,0.f }));//1
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,side,   (-side) }, Vec4{ 0.f,1.f,0.f }));//2
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,side,   (side) },  Vec4{ 0.f,1.f,0.f }));//3
+
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ side,-side,   (side) },   Vec4{ 0.f,-1.f,0.f }));//4
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,-side,  (side) },   Vec4{ 0.f,-1.f,0.f }));//5
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,-side,   (-side) }, Vec4{ 0.f,-1.f,0.f }));//12
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ side,-side,    (-side) }, Vec4{ 0.f,-1.f,0.f }));//13
+
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,side,   (side) },   Vec4{ -1.f,0.f,0.f }));	 //3
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,side,    (-side) }, Vec4{ -1.f,0.f,0.f }));//8
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,-side,   (-side) }, Vec4{ -1.f,0.f,0.f }));//9
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,-side,  (side) },   Vec4{ -1.f,0.f,0.f }));	 //5
 
 
 
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,     (-side) }, Vec4{ 1.f, 0.f,0.f }));  //10
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,    (side) }, Vec4{ 1.f, 0.f,0.f }));   //0
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (side) }, Vec4{ 1.f, 0.f,0.f }));  //4
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (-side) }, Vec4{ 1.f, 0.f,0.f }));  //6 
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ side,side,    (side) }, Vec4{ 0.f,0.f,1.f }));      //0
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,side,   (side) }, Vec4{ 0.f,0.f,1.f }));	  //3
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ -side,-side,  (side) }, Vec4{ 0.f,0.f,1.f }));	  //5
+		result.emplace_back(  PerPixelEffect::Vs::vIn(Pointf4{ side,-side,   (side) }, Vec4{ 0.f,0.f,1.f }));	  //4
 
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,    (-side) }, Vec4{ 0.f,0.f,-1.f }));//11
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,side,     (-side) }, Vec4{ 0.f,0.f,-1.f }));//10
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ side,-side,   (-side) },  Vec4{ 0.f,0.f,-1.f }));//6 
-		result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,  (-side) },  Vec4{ 0.f,0.f,-1.f }));//7
+
+
+		result.emplace_back(PerPixelEffect::Vs::vIn(Pointf4{ side,side,     (-side) }, Vec4{ 1.f, 0.f,0.f }));  //10
+		result.emplace_back(PerPixelEffect::Vs::vIn(Pointf4{ side,side,    (side) }, Vec4{ 1.f, 0.f,0.f }));   //0
+		result.emplace_back(PerPixelEffect::Vs::vIn(Pointf4{ side,-side,   (side) }, Vec4{ 1.f, 0.f,0.f }));  //4
+		result.emplace_back(PerPixelEffect::Vs::vIn(Pointf4{ side,-side,   (-side) }, Vec4{ 1.f, 0.f,0.f }));  //6 
+
+		result.emplace_back(PerPixelEffect::Vs::vIn(Pointf4{ -side,side,    (-side) }, Vec4{ 0.f,0.f,-1.f }));//11
+		result.emplace_back(PerPixelEffect::Vs::vIn(Pointf4{ side,side,     (-side) }, Vec4{ 0.f,0.f,-1.f }));//10
+		result.emplace_back(PerPixelEffect::Vs::vIn(Pointf4{ side,-side,   (-side) },  Vec4{ 0.f,0.f,-1.f }));//6 
+		result.emplace_back(PerPixelEffect::Vs::vIn(Pointf4{ -side,-side,  (-side) },  Vec4{ 0.f,0.f,-1.f }));//7
 
  //result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,side,      (-side) }, Vec4{ 0.f,0.666f }));//8
  //result.emplace_back(ColorEffect::Vs::vIn(Pointf4{ -side,-side,     (-side) }, Vec4{ 0.f,0.333f }));//9

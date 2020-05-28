@@ -62,18 +62,25 @@ public:
 
 	inline void Pipline::SeparateIndexesListAndVertex(const std::vector<Indexes>& IndexesList, const std::vector<typename Effect::Vs::vIn>& vertexes)
 	{
-		GoThroughVertexTransformation(IndexesList, vertexes);
+		GoThroughCameraTransformation(IndexesList, vertexes);
 	}
-	inline void Pipline::GoThroughVertexTransformation(const std::vector<Indexes>& IndexesList, const std::vector<typename Effect::Vs::vIn>& vertexes)
+	inline void Pipline::GoThroughCameraTransformation(const std::vector<Indexes>& IndexesList, const std::vector<typename Effect::Vs::vIn>& vertexes)
 	{
 		std::vector<Effect::Vs::vIn> verticesOut;
 		verticesOut = vertexes;
 
 		for (auto& v : verticesOut) {
 			camera.cameraTransformation *= v.p;
+			camera.cameraTransformation *= v.normal;
 		}
 
 
+		Pointf4 temp0{ ps.originLightPosition.x,ps.originLightPosition.y,ps.originLightPosition.z};
+		Pointf4 temp1 = (camera.cameraTransformation * temp0);
+		
+		ps.lightPosition.x = temp1.x;
+		ps.lightPosition.y = temp1.y;
+		ps.lightPosition.z = temp1.z;
 		AssembleTriangle(IndexesList, verticesOut);
 
 	}
@@ -85,7 +92,7 @@ public:
 			const auto& v0 = vertexes[indexes[0]];
 			const auto& v1 = vertexes[indexes[1]];
 			const auto& v2 = vertexes[indexes[2]];
-			if ((Vec4::cross((v1.p - v0.p), (v2.p - v0.p)) * Vec4(v0.p)) < 0.f) {// do backface culling in world space or (camera space)viewspace, or you fucked up
+		if ((Vec4::cross((v1.p - v0.p), (v2.p - v0.p)) * Vec4(v0.p)) < 0.f) {// do backface culling in world space or (camera space)viewspace, or you fucked up
 				ProcessTriangle(vs(v0), vs(v1), vs(v2), i);
 			}
 			i++;
@@ -320,11 +327,6 @@ public:
 	typename Effect::Ps ps;
 
 
-	//TexturePixelShader	texPs;
-	//ColorPixelShader	colorPs;  
-	//WaveyVertexShader	waveyVs;  
-	//NormalVertexShader	normalVs; 
-	//SolidGeometryShader	solidGs;  
 };
 
 

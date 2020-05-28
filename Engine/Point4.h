@@ -55,7 +55,7 @@ public:
 		result.w = w * rhs;
 		return	result;
 	}
-	_Point4& operator*=(T rhs) 
+	_Point4& operator*=(T rhs)
 	{
 
 		x *= rhs;
@@ -119,6 +119,18 @@ public:
 		z -= rhs.z;
 		w -= rhs.w;
 		return *this;
+	}
+
+
+	_Point4 operator-() const
+	{
+		_Point4 result;
+		result.x = -x;
+		result.y = -y;
+		result.z = -z;
+		result.w = -w;
+
+		return result;
 	}
 
 

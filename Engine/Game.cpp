@@ -26,9 +26,11 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),                         
-	pipColorEffect(gfx)
+	pipColorEffect(gfx),
+	perPiexlLight(gfx),
+	sp(1.f,12,12)
 {
-	pipColorEffect.gs.BindColors({ Colors::Red,Colors::Green,Colors::Blue,Colors::Magenta,Colors::Yellow,Colors::Cyan });
+	//pipColorEffect.gs.BindColors({ Colors::Red,Colors::Green,Colors::Blue,Colors::Magenta,Colors::Yellow,Colors::Cyan });
 
 }
 
@@ -46,9 +48,10 @@ void Game::UpdateModel()
 	const float dt = clock.Mark();
 	pipUpdate(dt);
 
-	Ncube.update(dt);
+	//Ncube.update(dt);
 
-	pipColorEffect.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList);
+	//pipColorEffect.SeparateIndexesListAndVertex(Ncube.IndicesList, Ncube.VertexList);
+	perPiexlLight.SeparateIndexesListAndVertex(sp.indicesList, sp.vertexList);
 
 }
 
@@ -61,34 +64,34 @@ void Game::ComposeFrame()
 void Game::pipUpdate(float dt)
 {
 	if (wnd.kbd.KeyIsPressed('B')) {
-		pipColorEffect.camera.moveu();
+		perPiexlLight.camera.moveu();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
-		pipColorEffect.camera.moved();
+		perPiexlLight.camera.moved();
 	}
 	if (wnd.kbd.KeyIsPressed('A')) {
-		pipColorEffect.camera.movel();
+		perPiexlLight.camera.movel();
 	}
 	if (wnd.kbd.KeyIsPressed('D')) {
-		pipColorEffect.camera.mover();
+		perPiexlLight.camera.mover();
 	}
 	if (wnd.kbd.KeyIsPressed('W')) {
-		pipColorEffect.camera.movef();
+		perPiexlLight.camera.movef();
 	}
 	if (wnd.kbd.KeyIsPressed('S')) {
-		pipColorEffect.camera.moveb();
+		perPiexlLight.camera.moveb();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
-		pipColorEffect.camera.RotateHorizontallyL();
+		perPiexlLight.camera.RotateHorizontallyL();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
-		pipColorEffect.camera.RotateHorizontallyR();
+		perPiexlLight.camera.RotateHorizontallyR();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
-		pipColorEffect.camera.RotateVerticallyB();
+		perPiexlLight.camera.RotateVerticallyB();
 	}
 	if (wnd.kbd.KeyIsPressed(VK_UP)) {
-		pipColorEffect.camera.RotateVerticallyU();
+		perPiexlLight.camera.RotateVerticallyU();
 	}
 
 }

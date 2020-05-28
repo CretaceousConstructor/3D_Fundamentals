@@ -154,6 +154,9 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GDIPlusManager.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="PerPixelEffect.h" />
+    <ClInclude Include="PointLightEffect.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="IndexList.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="ShaderChoser.h" />

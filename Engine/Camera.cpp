@@ -27,9 +27,9 @@ Camera::Camera(Pointf4 wl, Vec4 la, Vec4 lu)
 void Camera::Update()
 {
 	Mat4 viewTranslation = Mat4::Translation(-worldLocation.x, -worldLocation.y, -worldLocation.z);
-	Vec4 gDott = Vec4::cross(lookAt, lookUp);
+	Vec4 gCrosst = Vec4::cross(lookAt, lookUp);
 	Mat4 viewRotation = {
-		  gDott.x  ,   gDott.y ,  gDott.z   ,0.f,
+		  gCrosst.x  ,   gCrosst.y ,  gCrosst.z   ,0.f,
 		 lookUp.x  ,  lookUp.y ,  lookUp.z  ,0.f,
 		-lookAt.x  , -lookAt.y ,  -lookAt.z ,0.f,
 		 0.f       ,  0.f     ,  0.f        ,1.f
@@ -41,13 +41,13 @@ void Camera::Update()
 void Camera::RotateHorizontallyL()
 {
 	//lookAt rotate around lookUp
-	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt, rotateSpeed,lookUp);
+	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt, rotateSpeed, lookUp);
 	Update();
 }
 void Camera::RotateHorizontallyR()
 {
 	//lookAt rotate around lookUp
-	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt, -rotateSpeed, lookUp);
+	lookAt = Mat::RotateAroundArbitraryVectorStartAtOrigin(lookAt,-rotateSpeed, lookUp);
 	Update();
 }
 

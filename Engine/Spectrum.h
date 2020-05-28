@@ -10,8 +10,8 @@ public:
 	static constexpr float t =  3.f;
 
 
-	//(r - l) / (t - b) is in the same ratio as ScreenWidth / ScreenHeiht
-	//so your squre area will be squre area
+	//(r - l) / (t - b) is as the same ratio as ScreenWidth / ScreenHeiht
+	//so your squre shit will be squre shit
 	static constexpr float f = -8.f;
 	static constexpr float n = -3.f;
 
